@@ -17,6 +17,9 @@ HackEd CTF is a web-based cybersecurity learning system with integrated Capture 
 - FAQ page
 - Builder/about page
 
+#Wireframe on Figma
+-https://www.figma.com/design/PQ137oFeiHKgabeI4XLMH6/HackEd?node-id=14-2&t=RjB7PnhA0zh8kgaZ-1
+
 ## Planned Technology Stack
 
 - Backend: ASP.NET Core / .NET
