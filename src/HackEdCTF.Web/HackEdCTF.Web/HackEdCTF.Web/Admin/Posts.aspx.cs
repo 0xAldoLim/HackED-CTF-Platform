@@ -14,7 +14,7 @@ public partial class Admin_Posts : Page
     protected void Page_Load(object sender, EventArgs e)
     {
         // Admin-only guard (same pattern as other admin pages)
-        if (Session["UserID"] == null)
+        if (Session["UserID"] == null || Session["Role"] == null)
         {
             Response.Redirect("~/Login.aspx");
             return;
@@ -25,7 +25,8 @@ public partial class Admin_Posts : Page
             return;
         }
 
-        lblNavUsername.Text = Session["Username"].ToString();
+        // username might not be set, default to empty
+        lblNavUsername.Text = Session["Username"] != null ? Session["Username"].ToString() : "";
 
         if (!IsPostBack)
             LoadAll();
