@@ -23,7 +23,6 @@
                 <li><a href="~/Challenges/Index.aspx" runat="server" class="navbar-link active">Challenges</a></li>
                 <li><a href="~/Scoreboard.aspx" runat="server" class="navbar-link">Scoreboard</a></li>
                 <li><a href="~/Blog/Index.aspx" runat="server" class="navbar-link">Blog</a></li>
-                <li><a href="~/FAQ.aspx" runat="server" class="navbar-link">FAQ</a></li>
             </ul>
             <div class="navbar-actions">
                 <asp:HyperLink ID="lnkDashboard" runat="server" CssClass="btn btn-ghost btn-small" Visible="false">Dashboard</asp:HyperLink>
