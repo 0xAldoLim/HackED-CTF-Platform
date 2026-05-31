@@ -21,7 +21,7 @@
             </a>
             <ul class="navbar-menu">
                 <li><a href="~/Member/Dashboard.aspx" runat="server" class="navbar-link active">Dashboard</a></li>
-                <li><a href="~/Training/Index.aspx" runat="server" class="navbar-link">Training</a></li>
+                <li><a href="~/Training/ModuleListing.aspx" runat="server" class="navbar-link">Training</a></li>
                 <li><a href="~/Challenges/Index.aspx" runat="server" class="navbar-link">Challenges</a></li>
                 <li><a href="~/Scoreboard.aspx" runat="server" class="navbar-link">Scoreboard</a></li>
                 <li><a href="~/Blog/Index.aspx" runat="server" class="navbar-link">Blog</a></li>
@@ -154,7 +154,7 @@
                     <p style="color:var(--color-text-muted); font-size:0.875rem; margin-top:0.25rem;">Structured cybersecurity learning with integrated CTF simulation.</p>
                 </div>
                 <nav class="footer-links">
-                    <a href="~/Training/Index.aspx" runat="server">Training</a>
+                    <a href="~/Training/ModuleListing.aspx" runat="server">Training</a>
                     <a href="~/Challenges/Index.aspx" runat="server">Challenges</a>
                     <a href="~/Blog/Index.aspx" runat="server">Blog</a>
                     <a href="~/FAQ.aspx" runat="server">FAQ</a>

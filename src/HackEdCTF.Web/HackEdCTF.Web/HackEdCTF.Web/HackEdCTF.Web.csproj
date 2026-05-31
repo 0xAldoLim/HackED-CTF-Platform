@@ -66,6 +66,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Admin\Dashboard.aspx" />
+    <Content Include="Admin\TrainingCRUD.aspx" />
+    <Content Include="Admin\TrainingEditCreate.aspx" />
     <Content Include="Admin\Users.aspx" />
     <Content Include="App_Data\HackEdDB.mdf" />
     <Content Include="App_Data\HackEdDB_log.ldf">
@@ -81,6 +83,8 @@
     <Content Include="Member\Team.aspx" />
     <Content Include="Register.aspx" />
     <Content Include="Scoreboard.aspx" />
+    <Content Include="Training\ModuleDetail.aspx" />
+    <Content Include="Training\ModuleListing.aspx" />
     <Content Include="Web.config" />
     <Content Include="white.png" />
   </ItemGroup>
@@ -91,6 +95,20 @@
     </Compile>
     <Compile Include="Admin\Dashboard.aspx.designer.cs">
       <DependentUpon>Dashboard.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\TrainingCRUD.aspx.cs">
+      <DependentUpon>TrainingCRUD.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\TrainingCRUD.aspx.designer.cs">
+      <DependentUpon>TrainingCRUD.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\TrainingEditCreate.aspx.cs">
+      <DependentUpon>TrainingEditCreate.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\TrainingEditCreate.aspx.designer.cs">
+      <DependentUpon>TrainingEditCreate.aspx</DependentUpon>
     </Compile>
     <Compile Include="Admin\Users.aspx.cs">
       <DependentUpon>Users.aspx</DependentUpon>
@@ -151,6 +169,20 @@
     </Compile>
     <Compile Include="Scoreboard.aspx.designer.cs">
       <DependentUpon>Scoreboard.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Training\ModuleDetail.aspx.cs">
+      <DependentUpon>ModuleDetail.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Training\ModuleDetail.aspx.designer.cs">
+      <DependentUpon>ModuleDetail.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Training\ModuleListing.aspx.cs">
+      <DependentUpon>ModuleListing.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Training\ModuleListing.aspx.designer.cs">
+      <DependentUpon>ModuleListing.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
