@@ -120,6 +120,12 @@
                     <p class="footer-brand">HackEd</p>
                     <p style="color:var(--color-text-muted); font-size:0.875rem; margin-top:0.25rem;">Structured cybersecurity learning with integrated CTF simulation.</p>
                 </div>
+                <nav class="footer-links">
+                    <a href="~/Training/ModuleListing.aspx" runat="server">Training</a>
+                    <a href="~/Challenges/Index.aspx" runat="server">Challenges</a>
+                    <a href="~/FAQ.aspx" runat="server">FAQ</a>
+                    <a href="~/About.aspx" runat="server">About</a>
+                </nav>
             </div>
         </footer>
 
