@@ -20,7 +20,7 @@
             </a>
             <ul class="navbar-menu">
                 <li><a href="~/Admin/Dashboard.aspx" runat="server" class="navbar-link">Admin</a></li>
-                <li><a href="~/Training/Index.aspx" runat="server" class="navbar-link">Training</a></li>
+                <li><a href="~/Training/ModuleListing.aspx" runat="server" class="navbar-link">Training</a></li>
                 <li><a href="~/Challenges/Index.aspx" runat="server" class="navbar-link">Challenges</a></li>
                 <li><a href="~/Admin/Posts.aspx" runat="server" class="navbar-link active">Posts</a></li>
                 <li><a href="~/Admin/Users.aspx" runat="server" class="navbar-link">Users</a></li>
@@ -37,10 +37,6 @@
             <div class="page-header">
                 <h1 class="page-title"><asp:Label ID="lblHeading" runat="server"></asp:Label></h1>
             </div>
-
-            <asp:Panel ID="pnlAlert" runat="server" Visible="false" style="margin-bottom:1.5rem;">
-                <asp:Label ID="lblAlert" runat="server"></asp:Label>
-            </asp:Panel>
 
             <div class="card" style="max-width:760px;">
 
@@ -124,6 +120,12 @@
                     <p class="footer-brand">HackEd</p>
                     <p style="color:var(--color-text-muted); font-size:0.875rem; margin-top:0.25rem;">Structured cybersecurity learning with integrated CTF simulation.</p>
                 </div>
+                <nav class="footer-links">
+                    <a href="~/Training/ModuleListing.aspx" runat="server">Training</a>
+                    <a href="~/Challenges/Index.aspx" runat="server">Challenges</a>
+                    <a href="~/FAQ.aspx" runat="server">FAQ</a>
+                    <a href="~/About.aspx" runat="server">About</a>
+                </nav>
             </div>
         </footer>
 

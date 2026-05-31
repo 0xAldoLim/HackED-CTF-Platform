@@ -73,6 +73,7 @@
     <Content Include="Admin\TrainingCRUD.aspx" />
     <Content Include="Admin\TrainingEditCreate.aspx" />
     <Content Include="Admin\Users.aspx" />
+    <Content Include="About.aspx" />
     <Content Include="Announcements.aspx" />
     <Content Include="App_Data\HackEdDB.mdf" />
     <Content Include="App_Data\HackEdDB_log.ldf">
@@ -83,6 +84,7 @@
     <Content Include="css\site.css" />
     <Content Include="Challenges\Index.aspx" />
     <Content Include="Default.aspx" />
+    <Content Include="FAQ.aspx" />
     <Content Include="Global.asax" />
     <Content Include="HackEd_no_background.png" />
     <Content Include="Login.aspx" />
@@ -97,6 +99,10 @@
     <Content Include="white.png" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="About.aspx.cs">
+      <DependentUpon>About.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Announcements.aspx.cs">
       <DependentUpon>Announcements.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -187,6 +193,10 @@
     </Compile>
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="FAQ.aspx.cs">
+      <DependentUpon>FAQ.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
