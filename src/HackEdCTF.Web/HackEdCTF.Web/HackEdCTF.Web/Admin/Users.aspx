@@ -19,11 +19,11 @@
                 <img src="../white.png" alt="HackEd" class="navbar-logo" />
             </a>
             <ul class="navbar-menu">
-                <li><a href="~/Admin/Dashboard.aspx" runat="server" class="navbar-link">Admin</a></li>
-                <li><a href="~/Admin/TrainingCRUD.aspx" runat="server" class="navbar-link">Training</a></li>
-                <li><a href="~/Challenges/Index.aspx" runat="server" class="navbar-link">Challenges</a></li>
-                <li><a href="~/Admin/Posts.aspx" runat="server" class="navbar-link">Posts</a></li>
-                <li><a href="~/Admin/Users.aspx" runat="server" class="navbar-link active">Users</a></li>
+                <li><a href="~/Admin/Dashboard.aspx" runat="server" class="navbar-link active">Admin</a></li>
+                <li><a href="~/Admin/TrainingEditCreate.aspx" runat="server" class="navbar-link">Training</a></li>
+                <li><a href="~/Admin/ChallengeEdit.aspx" runat="server" class="navbar-link">Challenges</a></li>
+                <li><a href="~/Admin/PostEdit.aspx" runat="server" class="navbar-link">Posts</a></li>
+                <li><a href="~/Admin/Users.aspx" runat="server" class="navbar-link">Users</a></li>
             </ul>
             <div class="navbar-user">
                 <asp:Label ID="lblNavUsername" runat="server" CssClass="navbar-link" style="pointer-events:none;"></asp:Label>
