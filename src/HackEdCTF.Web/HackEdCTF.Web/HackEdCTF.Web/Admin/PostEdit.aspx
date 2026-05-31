@@ -38,10 +38,6 @@
                 <h1 class="page-title"><asp:Label ID="lblHeading" runat="server"></asp:Label></h1>
             </div>
 
-            <asp:Panel ID="pnlAlert" runat="server" Visible="false" style="margin-bottom:1.5rem;">
-                <asp:Label ID="lblAlert" runat="server"></asp:Label>
-            </asp:Panel>
-
             <div class="card" style="max-width:760px;">
 
                 <%-- Title (shared) --%>
