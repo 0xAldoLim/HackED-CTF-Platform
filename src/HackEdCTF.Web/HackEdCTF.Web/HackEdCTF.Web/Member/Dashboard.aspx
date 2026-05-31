@@ -20,7 +20,7 @@
             </a>
             <ul class="navbar-menu">
                 <li><a href="~/Member/Dashboard.aspx" runat="server" class="navbar-link active">Dashboard</a></li>
-                <li><a href="~/Training/Index.aspx" runat="server" class="navbar-link">Training</a></li>
+                <li><a href="~/Training/ModuleListing.aspx" runat="server" class="navbar-link">Training</a></li>
                 <li><a href="~/Challenges/Index.aspx" runat="server" class="navbar-link">Challenges</a></li>
                 <li><a href="~/Scoreboard.aspx" runat="server" class="navbar-link">Scoreboard</a></li>
                 <li><a href="~/Blog/Index.aspx" runat="server" class="navbar-link">Blog</a></li>
