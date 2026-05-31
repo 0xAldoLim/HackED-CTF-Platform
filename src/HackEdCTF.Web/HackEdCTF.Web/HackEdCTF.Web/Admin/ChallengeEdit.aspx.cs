@@ -120,9 +120,14 @@ public partial class Admin_ChallengeEdit : Page
         using (SqlConnection conn = new SqlConnection(ConnStr))
         {
             conn.Open();
-            SqlCommand cmd = new SqlCommand(@"
-                INSERT INTO [Challenges] ([Title], [Description], [Category], [Difficulty], [Points], [CorrectFlag], [Hint], [FileUrl], [IsActive], [CreatedAt])
-                VALUES (@Title, @Description, @Category, @Difficulty, @Points, @CorrectFlag, @Hint, @FileUrl, @IsActive, GETDATE())", conn);
+            bool hasLegacyFlagColumn = ChallengeColumnExists(conn, "Flag");
+            string sql = hasLegacyFlagColumn
+                ? @"INSERT INTO [Challenges] ([Title], [Description], [Category], [Difficulty], [Points], [CorrectFlag], [Flag], [Hint], [FileUrl], [IsActive], [CreatedAt])
+                    VALUES (@Title, @Description, @Category, @Difficulty, @Points, @CorrectFlag, @CorrectFlag, @Hint, @FileUrl, @IsActive, GETDATE())"
+                : @"INSERT INTO [Challenges] ([Title], [Description], [Category], [Difficulty], [Points], [CorrectFlag], [Hint], [FileUrl], [IsActive], [CreatedAt])
+                    VALUES (@Title, @Description, @Category, @Difficulty, @Points, @CorrectFlag, @Hint, @FileUrl, @IsActive, GETDATE())";
+
+            SqlCommand cmd = new SqlCommand(sql, conn);
             AddCommonParameters(cmd, points);
             cmd.Parameters.AddWithValue("@CorrectFlag", txtCorrectFlag.Text.Trim());
             cmd.ExecuteNonQuery();
@@ -136,6 +141,7 @@ public partial class Admin_ChallengeEdit : Page
         using (SqlConnection conn = new SqlConnection(ConnStr))
         {
             conn.Open();
+            bool hasLegacyFlagColumn = ChallengeColumnExists(conn, "Flag");
             string sql = @"
                 UPDATE [Challenges]
                 SET [Title] = @Title,
@@ -148,7 +154,11 @@ public partial class Admin_ChallengeEdit : Page
                     [IsActive] = @IsActive";
 
             if (txtCorrectFlag.Text.Trim().Length > 0)
+            {
                 sql += ", [CorrectFlag] = @CorrectFlag";
+                if (hasLegacyFlagColumn)
+                    sql += ", [Flag] = @CorrectFlag";
+            }
 
             sql += " WHERE [ChallengeID] = @ChallengeID";
 
@@ -174,6 +184,18 @@ public partial class Admin_ChallengeEdit : Page
         cmd.Parameters.AddWithValue("@Hint", string.IsNullOrWhiteSpace(txtHint.Text) ? (object)DBNull.Value : txtHint.Text.Trim());
         cmd.Parameters.AddWithValue("@FileUrl", string.IsNullOrWhiteSpace(txtFileUrl.Text) ? (object)DBNull.Value : txtFileUrl.Text.Trim());
         cmd.Parameters.AddWithValue("@IsActive", chkIsActive.Checked);
+    }
+
+    private bool ChallengeColumnExists(SqlConnection conn, string columnName)
+    {
+        SqlCommand cmd = new SqlCommand(@"
+            SELECT COUNT(*)
+            FROM sys.columns
+            WHERE object_id = OBJECT_ID(N'dbo.Challenges')
+              AND name = @ColumnName",
+            conn);
+        cmd.Parameters.AddWithValue("@ColumnName", columnName);
+        return (int)cmd.ExecuteScalar() > 0;
     }
 
     private void SetDropDownValue(DropDownList ddl, string value)

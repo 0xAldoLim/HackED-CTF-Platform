@@ -243,10 +243,16 @@ public partial class Challenges_Index : Page
 
             try
             {
-                SqlCommand cmdChallenge = new SqlCommand(@"
-                    SELECT [CorrectFlag], [Points]
-                    FROM [Challenges]
-                    WHERE [ChallengeID] = @ChallengeID AND [IsActive] = 1", conn, tx);
+                bool hasLegacyFlagColumn = ChallengeColumnExists(conn, tx, "Flag");
+                string challengeSql = hasLegacyFlagColumn
+                    ? @"SELECT COALESCE(NULLIF([CorrectFlag], ''), [Flag]) AS [CorrectFlag], [Points]
+                        FROM [Challenges]
+                        WHERE [ChallengeID] = @ChallengeID AND [IsActive] = 1"
+                    : @"SELECT [CorrectFlag], [Points]
+                        FROM [Challenges]
+                        WHERE [ChallengeID] = @ChallengeID AND [IsActive] = 1";
+
+                SqlCommand cmdChallenge = new SqlCommand(challengeSql, conn, tx);
                 cmdChallenge.Parameters.AddWithValue("@ChallengeID", challengeID);
 
                 SqlDataReader reader = cmdChallenge.ExecuteReader();
@@ -339,6 +345,19 @@ public partial class Challenges_Index : Page
         lblFlagFeedback.Text = message;
         pnlFlagFeedback.Visible = true;
         pnlDetail.Visible = true;
+    }
+
+    private bool ChallengeColumnExists(SqlConnection conn, SqlTransaction tx, string columnName)
+    {
+        SqlCommand cmd = new SqlCommand(@"
+            SELECT COUNT(*)
+            FROM sys.columns
+            WHERE object_id = OBJECT_ID(N'dbo.Challenges')
+              AND name = @ColumnName",
+            conn,
+            tx);
+        cmd.Parameters.AddWithValue("@ColumnName", columnName);
+        return (int)cmd.ExecuteScalar() > 0;
     }
 
     public string GetCategoryBadgeClass(string category)

@@ -66,6 +66,34 @@ BEGIN
 END;
 GO
 
+IF OBJECT_ID(N'dbo.Challenges', N'U') IS NOT NULL
+   AND COL_LENGTH('dbo.Challenges', 'Flag') IS NOT NULL
+   AND COL_LENGTH('dbo.Challenges', 'CorrectFlag') IS NOT NULL
+BEGIN
+    UPDATE dbo.Challenges
+    SET CorrectFlag = [Flag]
+    WHERE CorrectFlag IS NULL
+      AND [Flag] IS NOT NULL;
+END;
+GO
+
+IF OBJECT_ID(N'dbo.Challenges', N'U') IS NOT NULL
+   AND COL_LENGTH('dbo.Challenges', 'Flag') IS NOT NULL
+   AND NOT EXISTS (
+       SELECT 1
+       FROM sys.default_constraints dc
+       INNER JOIN sys.columns c
+           ON c.object_id = dc.parent_object_id
+          AND c.column_id = dc.parent_column_id
+       WHERE dc.parent_object_id = OBJECT_ID(N'dbo.Challenges')
+         AND c.name = N'Flag'
+   )
+BEGIN
+    ALTER TABLE dbo.Challenges
+    ADD CONSTRAINT DF_Challenges_Flag DEFAULT ('') FOR [Flag];
+END;
+GO
+
 IF OBJECT_ID(N'dbo.Submissions', N'U') IS NULL
 BEGIN
     CREATE TABLE dbo.Submissions
