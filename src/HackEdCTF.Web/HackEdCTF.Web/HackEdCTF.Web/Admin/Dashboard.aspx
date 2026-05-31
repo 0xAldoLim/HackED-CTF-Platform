@@ -70,10 +70,10 @@
                     <h2 class="card-title">Manage Training Content</h2>
                     <p class="card-text">CRUD shortcuts and clean table previews for Admin role.</p>
                 </div>
-                <div class="feature-card">
+                <a href="~/Admin/Challenges.aspx" runat="server" class="feature-card" style="text-decoration:none; display:block;">
                     <h2 class="card-title">Manage Challenges</h2>
                     <p class="card-text">CRUD shortcuts and clean table previews for Admin role.</p>
-                </div>
+                </a>
                 <div class="feature-card">
                     <h2 class="card-title">Manage Blog/News</h2>
                     <p class="card-text">CRUD shortcuts and clean table previews for Admin role.</p>
