@@ -101,7 +101,7 @@
             <%--QUICK LINKS--%>
             <h2 style="margin-bottom:var(--space-5);">Quick links</h2>
             <div class="dashboard-grid">
-                <a href="~/Training/Index.aspx" runat="server" class="quick-link-card" style="text-decoration:none;">
+                <a href="~/Training/ModuleListing.aspx" runat="server" class="quick-link-card" style="text-decoration:none;">
                     <h3 class="card-title">Training</h3>
                     <p class="card-text">Jump straight into the section without spelunking through menus.</p>
                 </a>
@@ -132,7 +132,7 @@
                     <p style="color:var(--color-text-muted); font-size:0.875rem; margin-top:0.25rem;">Structured cybersecurity learning with integrated CTF simulation.</p>
                 </div>
                 <nav class="footer-links">
-                    <a href="~/Training/Index.aspx" runat="server">Training</a>
+                    <a href="~/Training/ModuleListing.aspx" runat="server">Training</a>
                     <a href="~/Challenges/Index.aspx" runat="server">Challenges</a>
                     <a href="~/Blog/Index.aspx" runat="server">Blog</a>
                     <a href="~/FAQ.aspx" runat="server">FAQ</a>

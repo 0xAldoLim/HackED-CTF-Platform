@@ -21,9 +21,9 @@
             </a>
             <ul class="navbar-menu">
                 <li><a href="~/Admin/Dashboard.aspx" runat="server" class="navbar-link active">Admin</a></li>
-                <li><a href="~/Training/Index.aspx" runat="server" class="navbar-link">Training</a></li>
-                <li><a href="~/Challenges/Index.aspx" runat="server" class="navbar-link">Challenges</a></li>
-                <li><a href="~/Admin/Posts.aspx" runat="server" class="navbar-link">Posts</a></li>
+                <li><a href="~/Admin/TrainingEditCreate.aspx" runat="server" class="navbar-link">Training</a></li>
+                <li><a href="~/Admin/ChallengeEdit.aspx" runat="server" class="navbar-link">Challenges</a></li>
+                <li><a href="~/Admin/PostEdit.aspx" runat="server" class="navbar-link">Posts</a></li>
                 <li><a href="~/Admin/Users.aspx" runat="server" class="navbar-link">Users</a></li>
             </ul>
             <div class="navbar-user">
@@ -65,22 +65,22 @@
 
             <%--MANAGE CARDS--%>
             <div class="dashboard-grid" style="margin-bottom:var(--space-8);">
-                <div class="feature-card">
-                    <h2 class="card-title">Manage Training Content</h2>
-                    <p class="card-text">Add, edit, or remove training modules and lessons.</p>
-                </div>
-                <div class="feature-card">
-                    <h2 class="card-title">Manage Challenges</h2>
-                    <p class="card-text">Create new CTF challenges or update existing ones.</p>
-                </div>
-                <div class="feature-card">
-                    <h2 class="card-title">Manage Blog/News</h2>
-                    <p class="card-text">Publish posts, edit drafts, or take down outdated articles.</p>
-                </div>
-                <div class="feature-card">
-                    <h2 class="card-title">Manage Announcements</h2>
-                    <p class="card-text">Post site-wide announcements visible to all users.</p>
-                </div>
+                    <a href="~/Admin/TrainingEditCreate.aspx" runat="server" class="feature-card" style="text-decoration:none; display:block;">
+                        <h2 class="card-title">Manage Training Content</h2>
+                        <p class="card-text">Add, edit, or remove training modules and lessons.</p>
+                    </a>
+                    <a href="~/Admin/ChallengeEdit.aspx" runat="server" class="feature-card" style="text-decoration:none; display:block;">
+                        <h2 class="card-title">Manage Challenges</h2>
+                        <p class="card-text">Create new CTF challenges or update existing ones.</p>
+                    </a>
+                    <a href="~/Admin/PostEdit.aspx" runat="server" class="feature-card" style="text-decoration:none; display:block;">
+                        <h2 class="card-title">Manage Blog/News</h2>
+                        <p class="card-text">Publish posts, edit drafts, or take down outdated articles.</p>
+                    </a>
+                    <a href="~/Admin/PostEdit.aspx" runat="server" class="feature-card" style="text-decoration:none; display:block;">
+                        <h2 class="card-title">Manage Announcements</h2>
+                        <p class="card-text">Post site-wide announcements visible to all users.</p>
+                    </a>
                     <a href="~/Admin/Users.aspx" runat="server" class="feature-card" style="text-decoration:none; display:block;">
                         <h2 class="card-title">Manage Users</h2>
                         <p class="card-text">View accounts, change roles, or suspend users.</p>
@@ -96,9 +96,9 @@
                     <p style="color:var(--color-text-muted); font-size:0.875rem; margin-top:0.25rem;">Structured cybersecurity learning with integrated CTF simulation.</p>
                 </div>
                 <nav class="footer-links">
-                    <a href="~/Training/Index.aspx" runat="server">Training</a>
-                    <a href="~/Challenges/Index.aspx" runat="server">Challenges</a>
-                    <a href="~/Blog/Index.aspx" runat="server">Blog</a>
+                    <a href="~/Admin/TrainingEditCreate.aspx" runat="server">Training</a>
+                    <a href="~/Admin/ChallengeEdit.aspx" runat="server">Challenges</a>
+                    <a href="~/Admin/PostEdit.aspx" runat="server">Blog</a>
                     <a href="~/FAQ.aspx" runat="server">FAQ</a>
                     <a href="~/About.aspx" runat="server">About</a>
                 </nav>
