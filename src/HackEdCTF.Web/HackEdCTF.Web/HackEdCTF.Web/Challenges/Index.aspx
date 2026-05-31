@@ -19,7 +19,7 @@
             </a>
             <ul class="navbar-menu">
                 <li><a href="~/Default.aspx" runat="server" class="navbar-link">Home</a></li>
-                <li><a href="~/Training/Index.aspx" runat="server" class="navbar-link">Training</a></li>
+                <li><a href="~/Training/ModuleListing.aspx" runat="server" class="navbar-link">Training</a></li>
                 <li><a href="~/Challenges/Index.aspx" runat="server" class="navbar-link active">Challenges</a></li>
                 <li><a href="~/Scoreboard.aspx" runat="server" class="navbar-link">Scoreboard</a></li>
                 <li><a href="~/Blog/Index.aspx" runat="server" class="navbar-link">Blog</a></li>
