@@ -24,7 +24,7 @@ public partial class Admin_PostEdit : Page
     protected void Page_Load(object sender, EventArgs e)
     {
         // Admin-only guard
-        if (Session["UserID"] == null)
+        if (Session["UserID"] == null || Session["Role"] == null)
         {
             Response.Redirect("~/Login.aspx");
             return;
@@ -35,7 +35,8 @@ public partial class Admin_PostEdit : Page
             return;
         }
 
-        lblNavUsername.Text = Session["Username"].ToString();
+        // username might not be set, default to empty
+        lblNavUsername.Text = Session["Username"] != null ? Session["Username"].ToString() : "";
 
         if (!IsPostBack)
         {

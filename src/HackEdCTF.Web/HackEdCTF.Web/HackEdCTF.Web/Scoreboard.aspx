@@ -5,81 +5,105 @@
 <head runat="server">
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Scoreboard – HackEd</title>
+    <title>Scoreboard - HackEd</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700;800&family=Inter:wght@400;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
     <link href="~/css/site.css" rel="stylesheet" />
     <style>
+        .scoreboard-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) minmax(22rem, 0.72fr);
+            gap: var(--space-8);
+            align-items: start;
+        }
+
         .scoreboard-top-three {
             display: grid;
             grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: var(--space-6);
+            gap: var(--space-5);
             margin-bottom: var(--space-8);
         }
+
         .top-player-card {
-            padding: var(--space-6);
+            padding: var(--space-5);
             background: rgba(26, 35, 51, 0.9);
             border: 1px solid var(--color-border);
             border-radius: var(--radius-lg);
             box-shadow: var(--shadow-panel);
         }
+
         .top-player-card:first-child {
             border-color: var(--color-mint-border);
             box-shadow: var(--shadow-mint);
         }
-        .top-player-card .rank-name {
+
+        .rank-name {
             color: var(--color-mint);
             font-family: var(--font-heading);
-            font-size: 1.375rem;
+            font-size: 1.125rem;
             font-weight: 800;
             margin-bottom: var(--space-2);
         }
-        .top-player-card .rank-meta {
-            color: var(--color-text-muted);
-            font-size: 0.9375rem;
-        }
-        .scoreboard-search {
-            margin-bottom: var(--space-6);
-        }
-        .scoreboard-search label {
-            display: block;
+
+        .rank-meta {
             color: var(--color-text-muted);
             font-size: 0.875rem;
-            margin-bottom: var(--space-2);
         }
-        .scoreboard-layout {
-            display: grid;
-            grid-template-columns: minmax(0, 1fr) 22rem;
-            gap: var(--space-8);
-            align-items: start;
-        }
-        .chart-placeholder {
+
+        .score-chart {
             padding: var(--space-6);
             background: rgba(26, 35, 51, 0.9);
             border: 1px solid var(--color-border);
             border-radius: var(--radius-lg);
             box-shadow: var(--shadow-panel);
         }
-        .chart-placeholder-title {
+
+        .score-chart-title {
             color: var(--color-text-strong);
             font-family: var(--font-heading);
-            font-weight: 700;
             font-size: 1.125rem;
+            font-weight: 700;
             margin-bottom: var(--space-5);
         }
-        .chart-bars {
-            display: flex;
-            align-items: flex-end;
-            gap: var(--space-2);
-            height: 9rem;
+
+        .score-bar-row {
+            display: grid;
+            grid-template-columns: 2rem minmax(0, 1fr) 3rem;
+            gap: var(--space-3);
+            align-items: center;
+            margin-bottom: var(--space-3);
         }
-        .chart-bar {
-            flex: 1;
-            background: var(--color-mint);
-            border-radius: var(--radius-xs) var(--radius-xs) 0 0;
-            opacity: 0.85;
+
+        .score-bar-label {
+            color: var(--color-text);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
+
+        .score-bar-track {
+            height: 0.85rem;
+            background: rgba(16, 24, 38, 0.95);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-pill);
+            overflow: hidden;
+        }
+
+        .score-bar-fill {
+            height: 100%;
+            min-width: 0.35rem;
+            background: linear-gradient(90deg, var(--color-mint), #6fffd1);
+            border-radius: var(--radius-pill);
+        }
+
+        .score-bar-value {
+            color: var(--color-mint);
+            font-family: var(--font-code);
+            font-size: 0.875rem;
+            text-align: right;
+        }
+
         .tab-toggle {
             display: flex;
             gap: var(--space-2);
@@ -90,9 +114,12 @@
             margin-bottom: var(--space-8);
             width: fit-content;
         }
-        @media (max-width: 60rem) {
-            .scoreboard-layout { grid-template-columns: 1fr; }
-            .scoreboard-top-three { grid-template-columns: 1fr; }
+
+        @media (max-width: 64rem) {
+            .scoreboard-grid,
+            .scoreboard-top-three {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -109,7 +136,6 @@
                 <li><a href="Challenges/Index.aspx" class="navbar-link">Challenges</a></li>
                 <li><a href="Scoreboard.aspx" class="navbar-link active">Scoreboard</a></li>
                 <li><a href="Blog/Index.aspx" class="navbar-link">Blog</a></li>
-                <li><a href="FAQ.aspx" class="navbar-link">FAQ</a></li>
             </ul>
             <div class="navbar-user">
                 <asp:Panel ID="pnlNavAuth" runat="server" style="display:flex; gap:var(--space-3); align-items:center;">
@@ -125,42 +151,34 @@
 
             <div class="page-header">
                 <h1 class="page-title">Scoreboard</h1>
-                <p class="page-subtitle">Individual and team rankings across the platform.</p>
+                <p class="page-subtitle">Top players ranked by solved challenges and score.</p>
             </div>
 
             <div class="tab-toggle">
-                <asp:LinkButton ID="btnTabPlayers" runat="server" CssClass="filter-pill active" OnClick="btnTabPlayers_Click">Individual Scoreboard</asp:LinkButton>
-                <asp:LinkButton ID="btnTabTeams" runat="server" CssClass="filter-pill" OnClick="btnTabTeams_Click">Team Scoreboard</asp:LinkButton>
+                <asp:LinkButton ID="btnTabPlayers" runat="server" CssClass="filter-pill active" OnClick="btnTabPlayers_Click" CausesValidation="false">Users</asp:LinkButton>
+                <asp:LinkButton ID="btnTabTeams" runat="server" CssClass="filter-pill" OnClick="btnTabTeams_Click" CausesValidation="false">Teams</asp:LinkButton>
             </div>
 
-            <%-- PLAYERS VIEW --%>
             <asp:Panel ID="pnlPlayers" runat="server">
                 <div class="scoreboard-top-three">
                     <asp:Repeater ID="rptTopPlayers" runat="server">
                         <ItemTemplate>
                             <div class="top-player-card">
-                                <p class="rank-name">#<%# Eval("RowNum") %> <%# Eval("Username") %></p>
-                                <p class="rank-meta">Solves <%# Eval("SolvedCount") %> &bull; Score <%# string.Format("{0:N0}", Eval("TotalScore")) %></p>
+                                <p class="rank-name">#<%# Eval("RowNum") %> <%# Server.HtmlEncode(Eval("DisplayName").ToString()) %></p>
+                                <p class="rank-meta"><%# Eval("Solves") %> solves &bull; <%# string.Format("{0:N0}", Eval("Score")) %> pts</p>
                             </div>
                         </ItemTemplate>
                     </asp:Repeater>
                 </div>
 
-                <div class="scoreboard-search">
-                    <label>Search/filter</label>
-                    <asp:TextBox ID="txtSearchPlayers" runat="server" CssClass="form-control"
-                        placeholder="Find user or team" style="max-width:20rem;"
-                        AutoPostBack="true" OnTextChanged="txtSearchPlayers_TextChanged"></asp:TextBox>
-                </div>
-
-                <div class="scoreboard-layout">
+                <div class="scoreboard-grid">
                     <div>
                         <div class="table-wrapper">
                             <table class="scoreboard-table">
                                 <thead>
                                     <tr>
                                         <th style="width:4rem;">Rank</th>
-                                        <th>User/Team</th>
+                                        <th>User</th>
                                         <th>Solves</th>
                                         <th>Score</th>
                                         <th>Last Solve</th>
@@ -171,61 +189,57 @@
                                         <ItemTemplate>
                                             <tr class='<%# Convert.ToInt32(Eval("RowNum")) <= 3 ? "scoreboard-top" : "" %>'>
                                                 <td class="rank-cell"><%# Eval("RowNum") %></td>
-                                                <td><strong><%# Eval("Username") %></strong></td>
-                                                <td><%# Eval("SolvedCount") %></td>
-                                                <td class="text-mint" style="font-weight:700;"><%# string.Format("{0:N0}", Eval("TotalScore")) %></td>
-                                                <td style="color:var(--color-text-muted);"><%# Eval("LastSolve") ?? "—" %></td>
+                                                <td><strong><%# Server.HtmlEncode(Eval("DisplayName").ToString()) %></strong></td>
+                                                <td><%# Eval("Solves") %></td>
+                                                <td class="text-mint" style="font-weight:700;"><%# string.Format("{0:N0}", Eval("Score")) %></td>
+                                                <td style="color:var(--color-text-muted);"><%# FormatDate(Eval("LastSolveDate")) %></td>
                                             </tr>
                                         </ItemTemplate>
                                     </asp:Repeater>
                                 </tbody>
                             </table>
                         </div>
-                        <asp:Panel ID="pnlNoPlayers" runat="server" Visible="false"
-                            style="text-align:center; padding:var(--space-10) 0; color:var(--color-text-muted);">
-                            No players yet.
+                        <asp:Panel ID="pnlNoPlayers" runat="server" Visible="false" CssClass="card" style="text-align:center; padding:var(--space-8);">
+                            No solved challenges yet.
                         </asp:Panel>
                     </div>
 
-                    <div class="chart-placeholder">
-                        <p class="chart-placeholder-title">Score progression chart<br />placeholder</p>
-                        <div class="chart-bars">
-                            <div class="chart-bar" style="height:35%;"></div>
-                            <div class="chart-bar" style="height:52%;"></div>
-                            <div class="chart-bar" style="height:68%;"></div>
-                            <div class="chart-bar" style="height:80%;"></div>
-                            <div class="chart-bar" style="height:95%;"></div>
-                            <div class="chart-bar" style="height:100%;"></div>
-                            <div class="chart-bar" style="height:88%;"></div>
-                            <div class="chart-bar" style="height:72%;"></div>
-                            <div class="chart-bar" style="height:60%;"></div>
-                            <div class="chart-bar" style="height:45%;"></div>
-                        </div>
+                    <div class="score-chart">
+                        <p class="score-chart-title">Top 10 Solves Chart</p>
+                        <asp:Repeater ID="rptPlayerChart" runat="server">
+                            <ItemTemplate>
+                                <div class="score-bar-row">
+                                    <span class="score-bar-value">#<%# Eval("RowNum") %></span>
+                                    <div>
+                                        <div class="score-bar-label"><%# Server.HtmlEncode(Eval("DisplayName").ToString()) %></div>
+                                        <div class="score-bar-track">
+                                            <div class="score-bar-fill" style='width:<%# Eval("BarWidth") %>%;'></div>
+                                        </div>
+                                    </div>
+                                    <span class="score-bar-value"><%# Eval("Solves") %></span>
+                                </div>
+                            </ItemTemplate>
+                        </asp:Repeater>
+                        <asp:Panel ID="pnlNoPlayerChart" runat="server" Visible="false" style="color:var(--color-text-muted);">
+                            Chart appears after the first correct solve.
+                        </asp:Panel>
                     </div>
                 </div>
             </asp:Panel>
 
-            <%-- TEAMS VIEW --%>
             <asp:Panel ID="pnlTeams" runat="server" Visible="false">
                 <div class="scoreboard-top-three">
                     <asp:Repeater ID="rptTopTeams" runat="server">
                         <ItemTemplate>
                             <div class="top-player-card">
-                                <p class="rank-name">#<%# Eval("RowNum") %> <%# Eval("TeamName") %></p>
-                                <p class="rank-meta">Members <%# Eval("MemberCount") %> &bull; Score <%# string.Format("{0:N0}", Eval("TeamScore")) %></p>
+                                <p class="rank-name">#<%# Eval("RowNum") %> <%# Server.HtmlEncode(Eval("DisplayName").ToString()) %></p>
+                                <p class="rank-meta"><%# Eval("Solves") %> solves &bull; <%# string.Format("{0:N0}", Eval("Score")) %> pts &bull; <%# Eval("MemberCount") %> members</p>
                             </div>
                         </ItemTemplate>
                     </asp:Repeater>
                 </div>
 
-                <div class="scoreboard-search">
-                    <label>Search/filter</label>
-                    <asp:TextBox ID="txtSearchTeams" runat="server" CssClass="form-control"
-                        placeholder="Find user or team" style="max-width:20rem;"
-                        AutoPostBack="true" OnTextChanged="txtSearchTeams_TextChanged"></asp:TextBox>
-                </div>
-
-                <div class="scoreboard-layout">
+                <div class="scoreboard-grid">
                     <div>
                         <div class="table-wrapper">
                             <table class="scoreboard-table">
@@ -233,9 +247,9 @@
                                     <tr>
                                         <th style="width:4rem;">Rank</th>
                                         <th>Team</th>
-                                        <th>Members</th>
+                                        <th>Solves</th>
                                         <th>Score</th>
-                                        <th>Leader</th>
+                                        <th>Members</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -243,36 +257,40 @@
                                         <ItemTemplate>
                                             <tr class='<%# Convert.ToInt32(Eval("RowNum")) <= 3 ? "scoreboard-top" : "" %>'>
                                                 <td class="rank-cell"><%# Eval("RowNum") %></td>
-                                                <td><strong><%# Eval("TeamName") %></strong></td>
+                                                <td><strong><%# Server.HtmlEncode(Eval("DisplayName").ToString()) %></strong></td>
+                                                <td><%# Eval("Solves") %></td>
+                                                <td class="text-mint" style="font-weight:700;"><%# string.Format("{0:N0}", Eval("Score")) %></td>
                                                 <td><%# Eval("MemberCount") %></td>
-                                                <td class="text-mint" style="font-weight:700;"><%# string.Format("{0:N0}", Eval("TeamScore")) %></td>
-                                                <td style="color:var(--color-text-muted);"><%# Eval("LeaderName") %></td>
                                             </tr>
                                         </ItemTemplate>
                                     </asp:Repeater>
                                 </tbody>
                             </table>
                         </div>
-                        <asp:Panel ID="pnlNoTeams" runat="server" Visible="false"
-                            style="text-align:center; padding:var(--space-10) 0; color:var(--color-text-muted);">
-                            No teams yet.
+                        <asp:Panel ID="pnlNoTeams" runat="server" Visible="false" CssClass="card" style="text-align:center; padding:var(--space-8);">
+                            No team solves yet.
                         </asp:Panel>
                     </div>
 
-                    <div class="chart-placeholder">
-                        <p class="chart-placeholder-title">Score progression chart<br />placeholder</p>
-                        <div class="chart-bars">
-                            <div class="chart-bar" style="height:35%;"></div>
-                            <div class="chart-bar" style="height:52%;"></div>
-                            <div class="chart-bar" style="height:68%;"></div>
-                            <div class="chart-bar" style="height:80%;"></div>
-                            <div class="chart-bar" style="height:95%;"></div>
-                            <div class="chart-bar" style="height:100%;"></div>
-                            <div class="chart-bar" style="height:88%;"></div>
-                            <div class="chart-bar" style="height:72%;"></div>
-                            <div class="chart-bar" style="height:60%;"></div>
-                            <div class="chart-bar" style="height:45%;"></div>
-                        </div>
+                    <div class="score-chart">
+                        <p class="score-chart-title">Top 10 Team Solves</p>
+                        <asp:Repeater ID="rptTeamChart" runat="server">
+                            <ItemTemplate>
+                                <div class="score-bar-row">
+                                    <span class="score-bar-value">#<%# Eval("RowNum") %></span>
+                                    <div>
+                                        <div class="score-bar-label"><%# Server.HtmlEncode(Eval("DisplayName").ToString()) %></div>
+                                        <div class="score-bar-track">
+                                            <div class="score-bar-fill" style='width:<%# Eval("BarWidth") %>%;'></div>
+                                        </div>
+                                    </div>
+                                    <span class="score-bar-value"><%# Eval("Solves") %></span>
+                                </div>
+                            </ItemTemplate>
+                        </asp:Repeater>
+                        <asp:Panel ID="pnlNoTeamChart" runat="server" Visible="false" style="color:var(--color-text-muted);">
+                            Chart appears after the first team solve.
+                        </asp:Panel>
                     </div>
                 </div>
             </asp:Panel>
@@ -289,8 +307,6 @@
                     <a href="Training/ModuleListing.aspx">Training</a>
                     <a href="Challenges/Index.aspx">Challenges</a>
                     <a href="Blog/Index.aspx">Blog</a>
-                    <a href="FAQ.aspx">FAQ</a>
-                    <a href="About.aspx">About</a>
                 </nav>
             </div>
         </footer>

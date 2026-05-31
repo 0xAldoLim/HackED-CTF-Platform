@@ -72,11 +72,47 @@ public partial class Member_Team : Page
     private void LoadAllTeams(SqlConnection conn)
     {
         SqlCommand cmdAll = new SqlCommand(@"
-            SELECT t.[TeamID], t.[TeamName], t.[TeamScore],
-                   (SELECT COUNT(*) FROM [TeamMembers] WHERE [TeamID] = t.[TeamID]) AS MemberCount,
-                   ROW_NUMBER() OVER (ORDER BY t.[TeamScore] DESC) AS Ranking
-            FROM [Teams] t
-            ORDER BY t.[TeamScore] DESC", conn);
+            WITH TeamSolves AS
+            (
+                SELECT tm.[TeamID], s.[ChallengeID]
+                FROM [TeamMembers] tm
+                INNER JOIN [Submissions] s ON tm.[UserID] = s.[UserID]
+                WHERE s.[IsCorrect] = 1
+                GROUP BY tm.[TeamID], s.[ChallengeID]
+            ),
+            TeamSolveCounts AS
+            (
+                SELECT [TeamID], COUNT([ChallengeID]) AS Solves
+                FROM TeamSolves
+                GROUP BY [TeamID]
+            ),
+            MemberCounts AS
+            (
+                SELECT [TeamID], COUNT(DISTINCT [UserID]) AS MemberCount
+                FROM [TeamMembers]
+                GROUP BY [TeamID]
+            ),
+            ScoreRows AS
+            (
+                SELECT
+                    t.[TeamID],
+                    t.[TeamName],
+                    ISNULL(t.[TeamScore], 0) AS TeamScore,
+                    ISNULL(mc.[MemberCount], 0) AS MemberCount,
+                    ISNULL(tsc.[Solves], 0) AS Solves
+                FROM [Teams] t
+                LEFT JOIN MemberCounts mc ON t.[TeamID] = mc.[TeamID]
+                LEFT JOIN TeamSolveCounts tsc ON t.[TeamID] = tsc.[TeamID]
+            )
+            SELECT
+                [TeamID],
+                [TeamName],
+                [TeamScore],
+                [MemberCount],
+                [Solves],
+                ROW_NUMBER() OVER (ORDER BY [Solves] DESC, [TeamScore] DESC, [TeamName] ASC) AS Ranking
+            FROM ScoreRows
+            ORDER BY Ranking", conn);
         SqlDataAdapter da = new SqlDataAdapter(cmdAll);
         DataTable dt = new DataTable();
         da.Fill(dt);
@@ -92,10 +128,30 @@ public partial class Member_Team : Page
         cmdCount.Parameters.AddWithValue("@TID", teamID);
         lblMemberCount.Text = cmdCount.ExecuteScalar().ToString();
 
+        SqlCommand cmdSolvesCount = new SqlCommand(@"
+            SELECT COUNT(*)
+            FROM (
+                SELECT s.[ChallengeID]
+                FROM [TeamMembers] tm
+                INNER JOIN [Submissions] s ON tm.[UserID] = s.[UserID]
+                WHERE tm.[TeamID] = @TID
+                  AND s.[IsCorrect] = 1
+                GROUP BY s.[ChallengeID]
+            ) solved", conn);
+        cmdSolvesCount.Parameters.AddWithValue("@TID", teamID);
+        lblTeamSolves.Text = cmdSolvesCount.ExecuteScalar().ToString();
+
         SqlCommand cmdRank = new SqlCommand(@"
             SELECT Ranking FROM (
-                SELECT [TeamID], ROW_NUMBER() OVER (ORDER BY [TeamScore] DESC) AS Ranking
-                FROM [Teams]
+                SELECT
+                    t.[TeamID],
+                    ROW_NUMBER() OVER (
+                        ORDER BY COUNT(DISTINCT s.[ChallengeID]) DESC, ISNULL(t.[TeamScore], 0) DESC, t.[TeamName] ASC
+                    ) AS Ranking
+                FROM [Teams] t
+                LEFT JOIN [TeamMembers] tm ON t.[TeamID] = tm.[TeamID]
+                LEFT JOIN [Submissions] s ON tm.[UserID] = s.[UserID] AND s.[IsCorrect] = 1
+                GROUP BY t.[TeamID], t.[TeamName], t.[TeamScore]
             ) r WHERE [TeamID] = @TID", conn);
         cmdRank.Parameters.AddWithValue("@TID", teamID);
         object rank = cmdRank.ExecuteScalar();
@@ -117,13 +173,24 @@ public partial class Member_Team : Page
         rptMembers.DataBind();
 
         SqlCommand cmdSolves = new SqlCommand(@"
-            SELECT TOP 10 c.[Title] AS ChallengeName, u.[Username], c.[Points], s.[SubmittedAt]
-            FROM [Submissions] s
-            INNER JOIN [Users] u ON s.[UserID] = u.[UserID]
-            INNER JOIN [Challenges] c ON s.[ChallengeID] = c.[ChallengeID]
-            INNER JOIN [TeamMembers] tm ON u.[UserID] = tm.[UserID]
-            WHERE tm.[TeamID] = @TID AND s.[IsCorrect] = 1
-            ORDER BY s.[SubmittedAt] DESC", conn);
+            WITH RankedSolves AS
+            (
+                SELECT
+                    c.[Title] AS ChallengeName,
+                    u.[Username],
+                    c.[Points],
+                    s.[SubmittedAt],
+                    ROW_NUMBER() OVER (PARTITION BY s.[ChallengeID] ORDER BY s.[SubmittedAt] DESC) AS SolveRank
+                FROM [Submissions] s
+                INNER JOIN [Users] u ON s.[UserID] = u.[UserID]
+                INNER JOIN [Challenges] c ON s.[ChallengeID] = c.[ChallengeID]
+                INNER JOIN [TeamMembers] tm ON u.[UserID] = tm.[UserID]
+                WHERE tm.[TeamID] = @TID AND s.[IsCorrect] = 1
+            )
+            SELECT TOP 10 [ChallengeName], [Username], [Points], [SubmittedAt]
+            FROM RankedSolves
+            WHERE SolveRank = 1
+            ORDER BY [SubmittedAt] DESC", conn);
         cmdSolves.Parameters.AddWithValue("@TID", teamID);
         SqlDataAdapter daSolves = new SqlDataAdapter(cmdSolves);
         DataTable dtSolves = new DataTable();
@@ -181,6 +248,12 @@ public partial class Member_Team : Page
         string name = txtTeamName.Text.Trim();
         string code = GenerateInviteCode();
 
+        if (name.Length < 3)
+        {
+            ShowAlert("Team name must be at least 3 characters.", false);
+            return;
+        }
+
         using (SqlConnection conn = new SqlConnection(ConnStr))
         {
             conn.Open();
@@ -188,6 +261,11 @@ public partial class Member_Team : Page
                 "SELECT COUNT(*) FROM [Teams] WHERE [TeamName] = @Name", conn);
             cmdCheck.Parameters.AddWithValue("@Name", name);
             if ((int)cmdCheck.ExecuteScalar() > 0) { ShowAlert("That team name is already taken.", false); return; }
+
+            SqlCommand cmdAlreadyTeam = new SqlCommand(
+                "SELECT COUNT(*) FROM [TeamMembers] WHERE [UserID] = @UID", conn);
+            cmdAlreadyTeam.Parameters.AddWithValue("@UID", userID);
+            if ((int)cmdAlreadyTeam.ExecuteScalar() > 0) { ShowAlert("You are already in a team.", false); return; }
 
             SqlCommand cmdCreate = new SqlCommand(@"
                 INSERT INTO [Teams] ([TeamName], [LeaderUserID], [InviteCode])

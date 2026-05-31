@@ -13,7 +13,7 @@
     <style>
         .team-stats-row {
             display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
+            grid-template-columns: repeat(4, minmax(0, 1fr));
             gap: var(--space-6);
             margin-bottom: var(--space-8);
         }
@@ -69,7 +69,6 @@
                 <li><a href="~/Challenges/Index.aspx" runat="server" class="navbar-link">Challenges</a></li>
                 <li><a href="~/Scoreboard.aspx" runat="server" class="navbar-link">Scoreboard</a></li>
                 <li><a href="~/Blog/Index.aspx" runat="server" class="navbar-link">Blog</a></li>
-                <li><a href="~/FAQ.aspx" runat="server" class="navbar-link">FAQ</a></li>
             </ul>
             <div class="navbar-user">
                 <a href="~/Member/Profile.aspx" runat="server" class="navbar-link">
@@ -86,7 +85,7 @@
                 <asp:Label ID="lblAlert" runat="server"></asp:Label>
             </asp:Panel>
 
-            <%--Create/Join--%>
+            <%-- NO TEAM: Create / Join --%>
             <asp:Panel ID="pnlNoTeam" runat="server">
                 <div class="page-header">
                     <h1 class="page-title">My Team</h1>
@@ -123,6 +122,7 @@
                     </div>
                 </div>
 
+                <%-- EXISTING TEAMS LIST --%>
                 <div style="margin-top:var(--space-10);">
                     <h2 class="page-title" style="font-size:1.5rem; margin-bottom:var(--space-2);">Existing Teams</h2>
                     <p class="page-subtitle" style="margin-bottom:var(--space-6);">Browse all active teams and view their profiles.</p>
@@ -138,6 +138,7 @@
                                     <h3 class="card-title" style="margin-bottom:var(--space-1);"><%# Eval("TeamName") %></h3>
                                     <p style="color:var(--color-text-muted); font-size:0.875rem; margin-bottom:var(--space-4);">
                                         Team score: <%# string.Format("{0:N0}", Eval("TeamScore")) %> &nbsp;&bull;&nbsp;
+                                        Solves: <%# Eval("Solves") %> &nbsp;&bull;&nbsp;
                                         Ranking: #<%# Eval("Ranking") %> &nbsp;&bull;&nbsp;
                                         Members: <%# Eval("MemberCount") %>
                                     </p>
@@ -152,6 +153,7 @@
                 </div>
             </asp:Panel>
 
+            <%-- HAS TEAM: Team Profile --%>
             <asp:Panel ID="pnlHasTeam" runat="server" Visible="false">
 
                 <asp:Panel ID="pnlBackToTeams" runat="server" Visible="false" style="margin-bottom:var(--space-6);">
@@ -169,6 +171,10 @@
                     <div class="stat-card">
                         <strong class="stat-value"><asp:Label ID="lblTeamScore" runat="server">0</asp:Label></strong>
                         <span class="stat-label">Team Score</span>
+                    </div>
+                    <div class="stat-card">
+                        <strong class="stat-value"><asp:Label ID="lblTeamSolves" runat="server">0</asp:Label></strong>
+                        <span class="stat-label">Team Solves</span>
                     </div>
                     <div class="stat-card">
                         <strong class="stat-value">#<asp:Label ID="lblTeamRank" runat="server">—</asp:Label></strong>
@@ -236,7 +242,7 @@
 
                 <div class="team-section-card">
                     <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:var(--space-4);">
-                        <p class="text-mint" style="font-family:var(--font-code); font-size:0.875rem;">Team activity chart placeholder</p>
+                        <p class="text-mint" style="font-family:var(--font-code); font-size:0.875rem;">Team actions</p>
                         <div style="display:flex; gap:var(--space-3);">
                             <asp:Button ID="btnManageTeam" runat="server" Text="Manage Team"
                                 CssClass="btn btn-primary btn-small" OnClick="btnManageTeam_Click" />
@@ -271,8 +277,6 @@
                     <a href="~/Training/ModuleListing.aspx" runat="server">Training</a>
                     <a href="~/Challenges/Index.aspx" runat="server">Challenges</a>
                     <a href="~/Blog/Index.aspx" runat="server">Blog</a>
-                    <a href="~/FAQ.aspx" runat="server">FAQ</a>
-                    <a href="~/About.aspx" runat="server">About</a>
                 </nav>
             </div>
         </footer>

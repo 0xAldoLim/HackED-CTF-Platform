@@ -28,6 +28,7 @@ sqllocaldb stop MSSQLLocalDB
 ```text
 database/repair/repair_challenge_schema.sql
 database/schema/challenges_schema.sql
+database/schema/team_scoreboard_schema.sql
 database/seed-data/challenges_seed.sql
 ```
 
