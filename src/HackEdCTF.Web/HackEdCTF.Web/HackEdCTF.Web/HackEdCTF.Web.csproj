@@ -65,6 +65,8 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Admin\ChallengeEdit.aspx" />
+    <Content Include="Admin\Challenges.aspx" />
     <Content Include="Admin\Dashboard.aspx" />
     <Content Include="Admin\TrainingCRUD.aspx" />
     <Content Include="Admin\TrainingEditCreate.aspx" />
@@ -74,6 +76,7 @@
       <DependentUpon>HackEdDB.mdf</DependentUpon>
     </Content>
     <Content Include="css\site.css" />
+    <Content Include="Challenges\Index.aspx" />
     <Content Include="Default.aspx" />
     <Content Include="Global.asax" />
     <Content Include="HackEd_no_background.png" />
@@ -89,6 +92,20 @@
     <Content Include="white.png" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Admin\ChallengeEdit.aspx.cs">
+      <DependentUpon>ChallengeEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\ChallengeEdit.aspx.designer.cs">
+      <DependentUpon>ChallengeEdit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\Challenges.aspx.cs">
+      <DependentUpon>Challenges.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\Challenges.aspx.designer.cs">
+      <DependentUpon>Challenges.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Admin\Dashboard.aspx.cs">
       <DependentUpon>Dashboard.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -116,6 +133,13 @@
     </Compile>
     <Compile Include="Admin\Users.aspx.designer.cs">
       <DependentUpon>Users.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Challenges\Index.aspx.cs">
+      <DependentUpon>Index.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Challenges\Index.aspx.designer.cs">
+      <DependentUpon>Index.aspx</DependentUpon>
     </Compile>
     <Compile Include="Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
