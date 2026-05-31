@@ -48,3 +48,68 @@ BEGIN
          NULL,
          1);
 END;
+
+IF NOT EXISTS (SELECT 1 FROM dbo.Challenges WHERE Title = N'I Think We Can Cook This Blob')
+BEGIN
+    INSERT INTO dbo.Challenges
+        (Title, Description, Category, Difficulty, Points, CorrectFlag, Hint, FileUrl, IsActive)
+    VALUES
+        (N'I Think We Can Cook This Blob',
+         N'Work out what the blob is hiding and recover the flag.',
+         N'Miscellaneous',
+         N'Easy',
+         100,
+         N'hacked{congrats_on_your_first_chall}',
+         N'64 or 67?',
+         NULL,
+         1);
+END;
+
+IF NOT EXISTS (SELECT 1 FROM dbo.Challenges WHERE Title = N'Stage Name')
+BEGIN
+    INSERT INTO dbo.Challenges
+        (Title, Description, Category, Difficulty, Points, CorrectFlag, Hint, FileUrl, IsActive)
+    VALUES
+        (N'Stage Name',
+         N'Be careful, this guy has multiple personalities.',
+         N'OSINT',
+         N'Easy',
+         150,
+         N'hacked{joji}',
+         N'hacked{stagename}',
+         N'https://drive.google.com/file/d/1x29ppRhVjF0ixSasYZXC6jE0x4_JKOKr/view?usp=sharing',
+         1);
+END;
+
+IF NOT EXISTS (SELECT 1 FROM dbo.Challenges WHERE Title = N'Why is the pokemon game so weird?')
+BEGIN
+    INSERT INTO dbo.Challenges
+        (Title, Description, Category, Difficulty, Points, CorrectFlag, Hint, FileUrl, IsActive)
+    VALUES
+        (N'Why is the pokemon game so weird?',
+         N'Try to play, my friend said this game have virus.. but is it?
+Flag format: hacked{all_the_weird_pieces}',
+         N'Reverse Engineering',
+         N'Hard',
+         500,
+         N'hacked{9bdca6ea-8277-45c2-ac72-c873b2f92b0b}',
+         N'Seriously, you have to play.',
+         N'https://drive.google.com/file/d/1SkPxYs9lGcaCTfHw4qCBIoncTnGEWq35/view?usp=sharing',
+         1);
+END;
+
+IF NOT EXISTS (SELECT 1 FROM dbo.Challenges WHERE Title = N'Bytes')
+BEGIN
+    INSERT INTO dbo.Challenges
+        (Title, Description, Category, Difficulty, Points, CorrectFlag, Hint, FileUrl, IsActive)
+    VALUES
+        (N'Bytes',
+         N'Analyze the pcap file and try to figure out what was written?',
+         N'Forensics',
+         N'Medium',
+         250,
+         N'hacked{9fd0b137-cfc7-49e6-95c0-4fcc7822a274}',
+         N'c+v? and bin',
+         N'https://drive.google.com/file/d/1UcdxG64RwQJZgtSkocX-_ui-QKz36m91/view?usp=sharing',
+         1);
+END;
