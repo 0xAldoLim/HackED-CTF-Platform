@@ -85,6 +85,33 @@ public partial class Member_Dashboard
     protected global::System.Web.UI.WebControls.Label lblTeamStatus;
 
     /// <summary>
+    /// lblModuleTitle control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Label lblModuleTitle;
+
+    /// <summary>
+    /// pnlProgressFill control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Panel pnlProgressFill;
+
+    /// <summary>
+    /// lblModuleProgress control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Label lblModuleProgress;
+
+    /// <summary>
     /// rptAnnouncements control.
     /// </summary>
     /// <remarks>

@@ -39,10 +39,12 @@
                 <p style="color:var(--color-text-muted);">View, edit roles, and manage account status for all users.</p>
             </div>
 
+            <%-- Alert --%>
             <asp:Panel ID="pnlAlert" runat="server" Visible="false" style="margin-bottom:1.5rem;">
                 <asp:Label ID="lblAlert" runat="server"></asp:Label>
             </asp:Panel>
 
+            <%-- Search bar --%>
             <div style="display:flex; gap:var(--space-3); margin-bottom:var(--space-6); align-items:center;">
                 <asp:TextBox ID="txtSearch" runat="server" CssClass="form-control"
                     placeholder="Search by username or email..."
@@ -53,6 +55,7 @@
                     CssClass="btn btn-ghost btn-small" OnClick="btnReset_Click" />
             </div>
 
+            <%-- Users table --%>
             <div class="table-wrapper">
                 <table class="crud-table">
                     <thead>
@@ -88,21 +91,21 @@
                                     <td style="color:var(--color-text-muted);"><%# Convert.ToDateTime(Eval("CreatedAt")).ToString("MMM dd, yyyy") %></td>
                                     <td>
                                         <div style="display:flex; gap:var(--space-2); flex-wrap:wrap;">
-
+                                            <%-- Toggle Role --%>
                                             <asp:LinkButton runat="server"
                                                 CommandName='<%# Eval("Role").ToString() == "Admin" ? "Demote" : "Promote" %>'
                                                 CommandArgument='<%# Eval("UserID") %>'
                                                 CssClass='<%# Eval("Role").ToString() == "Admin" ? "btn btn-ghost btn-small" : "btn btn-secondary btn-small" %>'>
                                                 <%# Eval("Role").ToString() == "Admin" ? "Make Player" : "Make Admin" %>
                                             </asp:LinkButton>
-
+                                            <%-- Toggle Active --%>
                                             <asp:LinkButton runat="server"
                                                 CommandName='<%# (bool)Eval("IsActive") ? "Deactivate" : "Activate" %>'
                                                 CommandArgument='<%# Eval("UserID") %>'
                                                 CssClass='<%# (bool)Eval("IsActive") ? "btn btn-ghost btn-small" : "btn btn-secondary btn-small" %>'>
                                                 <%# (bool)Eval("IsActive") ? "Deactivate" : "Activate" %>
                                             </asp:LinkButton>
-
+                                            <%-- Delete --%>
                                             <asp:LinkButton runat="server"
                                                 CommandName="Delete"
                                                 CommandArgument='<%# Eval("UserID") %>'
@@ -120,6 +123,7 @@
                 </table>
             </div>
 
+            <%-- Empty state --%>
             <asp:Panel ID="pnlEmpty" runat="server" Visible="false"
                 style="text-align:center; padding:var(--space-10) 0; color:var(--color-text-muted);">
                 No users found.
