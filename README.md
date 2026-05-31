@@ -2,6 +2,20 @@
 
 HackEd CTF is a web-based cybersecurity learning system with integrated Capture the Flag learning features. The platform is planned to help users learn cybersecurity concepts through structured training modules, practical challenges, team participation, score tracking, and supporting learning content.
 
+## Read This First Before Proceeding
+
+This repository is for implementation only. Before building any page, team members must read the CSS style guide and use the shared global CSS from:
+
+`src/HackEdCTF.Web/wwwroot/css/site.css`
+
+Do not create separate page styling that ignores the shared theme. Use the provided classes for layout, buttons, cards, forms, tables, badges, modals, filters, navbar, and footer.
+
+Keep the website visually consistent with the HackEd Figma wireframe and brand theme. The Figma reference is:
+
+`https://www.figma.com/design/PQ137oFeiHKgabeI4XLMH6/HackEd?node-id=14-2&t=RjB7PnhA0zh8kgaZ-1`
+
+This shared CSS is the main design compass for the team. The purpose is to prevent every teammate from creating a visually different webpage design. Main should stay stable, but this specific CSS foundation belongs in main because everyone needs it.
+
 ## Main Planned Features
 
 - Training modules divided into Beginner, Advanced, and Expert levels
@@ -16,6 +30,10 @@ HackEd CTF is a web-based cybersecurity learning system with integrated Capture 
 - Cybersecurity news updates
 - FAQ page
 - Builder/about page
+
+## Wireframe on Figma
+
+- https://www.figma.com/design/PQ137oFeiHKgabeI4XLMH6/HackEd?node-id=14-2&t=RjB7PnhA0zh8kgaZ-1
 
 ## Planned Technology Stack
 
@@ -35,6 +53,8 @@ HackEd CTF is a web-based cybersecurity learning system with integrated Capture 
 
 - `src/` - Main application source code will be placed here later.
 - `src/HackEdCTF.Web/` - Placeholder for the future ASP.NET Core web application project.
+- `src/HackEdCTF.Web/wwwroot/css/site.css` - Shared global CSS system for the HackEd interface.
+- `src/HackEdCTF.Web/wwwroot/css/STYLE_GUIDE.md` - Styling rules for all team members.
 - `database/` - Future database planning and implementation files for schema and seed data.
 - `assets/` - Future implementation assets such as images, icons, and wireframes.
 - `tests/` - Future automated test projects and test-related files.
