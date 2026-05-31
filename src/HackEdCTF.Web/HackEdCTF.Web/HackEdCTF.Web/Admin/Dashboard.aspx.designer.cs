@@ -6,6 +6,5 @@
     protected global::System.Web.UI.WebControls.Label lblModuleCount;
     protected global::System.Web.UI.WebControls.Label lblChallengeCount;
     protected global::System.Web.UI.WebControls.Label lblPostCount;
-    protected global::System.Web.UI.WebControls.Repeater rptPreview;
     protected global::System.Web.UI.WebControls.LinkButton lnkLogout;
 }

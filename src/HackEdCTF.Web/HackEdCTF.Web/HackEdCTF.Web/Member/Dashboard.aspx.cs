@@ -62,12 +62,10 @@ public partial class Member_Dashboard : Page
             {
                 int pct = (int)Math.Round((double)solved / total * 100);
                 lblProgress.Text = pct + "%";
-                pnlProgressFill.Style["--progress-value"] = pct + "%";
             }
             else
             {
                 lblProgress.Text = "0%";
-                pnlProgressFill.Style["--progress-value"] = "0%";
             }
 
             //Team membership
@@ -85,14 +83,10 @@ public partial class Member_Dashboard : Page
             if (moduleTitle != null)
             {
                 lblCurrentModule.Text = moduleTitle.ToString();
-                lblModuleTitle.Text = moduleTitle.ToString();
-                lblModuleProgress.Text = "Continue where you left off";
             }
             else
             {
                 lblCurrentModule.Text = "—";
-                lblModuleTitle.Text = "No active module";
-                lblModuleProgress.Text = "Check back soon";
             }
 
             //Recent announcements
