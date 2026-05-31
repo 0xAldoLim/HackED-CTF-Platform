@@ -14,7 +14,6 @@
 <body>
     <form id="form1" runat="server">
 
-        <%-- ===== NAVBAR ===== --%>
         <nav class="navbar">
             <a href="Default.aspx" class="navbar-brand">
                 <img src="white.png" alt="HackEd" class="navbar-logo" />
@@ -33,7 +32,6 @@
             </div>
         </nav>
 
-        <%-- ===== REGISTER CARD ===== --%>
         <div class="centered-panel">
             <div class="auth-card">
 
@@ -41,12 +39,10 @@
 
                 <h1 class="auth-title">Create your HackEd account</h1>
 
-                <%-- Alert panel for server-side messages --%>
                 <asp:Panel ID="pnlAlert" runat="server" Visible="false" CssClass="alert alert-danger" style="margin-bottom:1.25rem;">
                     <asp:Label ID="lblAlert" runat="server"></asp:Label>
                 </asp:Panel>
 
-                <%-- Username --%>
                 <div class="form-group">
                     <label class="form-label" for="<%= txtUsername.ClientID %>">Username</label>
                     <asp:TextBox ID="txtUsername" runat="server" CssClass="form-control" placeholder="cyber_student" MaxLength="50"></asp:TextBox>
@@ -61,7 +57,6 @@
                         OnServerValidate="cvUsername_ServerValidate" />
                 </div>
 
-                <%-- Email --%>
                 <div class="form-group">
                     <label class="form-label" for="<%= txtEmail.ClientID %>">Email</label>
                     <asp:TextBox ID="txtEmail" runat="server" CssClass="form-control" placeholder="student@example.com" MaxLength="100"></asp:TextBox>
@@ -75,7 +70,6 @@
                         OnServerValidate="cvEmail_ServerValidate" />
                 </div>
 
-                <%-- Password --%>
                 <div class="form-group">
                     <label class="form-label" for="<%= txtPassword.ClientID %>">Password</label>
                     <asp:TextBox ID="txtPassword" runat="server" TextMode="Password" CssClass="form-control" placeholder="••••••••" MaxLength="100"></asp:TextBox>
@@ -86,7 +80,6 @@
                         ErrorMessage="Password must be at least 8 characters." CssClass="validation-message" Display="Dynamic" />
                 </div>
 
-                <%-- Confirm Password --%>
                 <div class="form-group">
                     <label class="form-label" for="<%= txtConfirmPassword.ClientID %>">Confirm password</label>
                     <asp:TextBox ID="txtConfirmPassword" runat="server" TextMode="Password" CssClass="form-control" placeholder="••••••••" MaxLength="100"></asp:TextBox>
@@ -96,14 +89,12 @@
                         ErrorMessage="Passwords do not match." CssClass="validation-message" Display="Dynamic" />
                 </div>
 
-                <%-- Role indicator (read-only, matches wireframe) --%>
                 <div class="form-group">
                     <div class="badge badge-user" style="width:100%; justify-content:flex-start; padding:0.75rem 1rem; border-radius:var(--radius-md); font-size:0.9375rem;">
                         Default role: Student / User
                     </div>
                 </div>
 
-                <%-- Submit --%>
                 <asp:Button ID="btnRegister" runat="server" Text="Register" CssClass="btn btn-primary btn-block"
                     OnClick="btnRegister_Click" style="margin-top:0.5rem;" />
 
@@ -114,7 +105,6 @@
             </div>
         </div>
 
-        <%-- ===== FOOTER ===== --%>
         <footer class="footer">
             <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:1rem;">
                 <div>

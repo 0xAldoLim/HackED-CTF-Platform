@@ -14,14 +14,14 @@
 <body>
     <form id="form1" runat="server">
 
-        <%-- ===== NAVBAR (Admin) ===== --%>
+        <%--NAVBAR--%>
         <nav class="navbar">
             <a href="../Default.aspx" runat="server" class="navbar-brand">
                 <img src="../white.png" alt="HackEd" class="navbar-logo" />
             </a>
             <ul class="navbar-menu">
                 <li><a href="~/Admin/Dashboard.aspx" runat="server" class="navbar-link active">Admin</a></li>
-                <li><a href="~/Admin/TrainingCRUD.aspx" runat="server" class="navbar-link">Training</a></li>
+                <li><a href="~/Training/Index.aspx" runat="server" class="navbar-link">Training</a></li>
                 <li><a href="~/Challenges/Index.aspx" runat="server" class="navbar-link">Challenges</a></li>
                 <li><a href="~/Admin/Posts.aspx" runat="server" class="navbar-link">Posts</a></li>
                 <li><a href="~/Admin/Users.aspx" runat="server" class="navbar-link">Users</a></li>
@@ -33,7 +33,7 @@
             </div>
         </nav>
 
-        <%-- ===== MAIN CONTENT ===== --%>
+        <%--MAIN CONTENT--%>
         <main class="container section">
 
             <div class="page-header">
@@ -44,7 +44,7 @@
                 </p>
             </div>
 
-            <%-- ===== STAT CARDS ===== --%>
+            <%--STAT CARDS--%>
             <div class="dashboard-grid" style="margin-bottom:var(--space-8);">
                 <div class="stat-card">
                     <span class="stat-value"><asp:Label ID="lblUserCount" runat="server">0</asp:Label></span>
@@ -64,60 +64,32 @@
                 </div>
             </div>
 
-            <%-- ===== MANAGE CARDS ===== --%>
+            <%--MANAGE CARDS--%>
             <div class="dashboard-grid" style="margin-bottom:var(--space-8);">
                 <div class="feature-card">
                     <h2 class="card-title">Manage Training Content</h2>
-                    <p class="card-text">CRUD shortcuts and clean table previews for Admin role.</p>
+                    <p class="card-text">Add, edit, or remove training modules and lessons.</p>
                 </div>
-                <a href="~/Admin/Challenges.aspx" runat="server" class="feature-card" style="text-decoration:none; display:block;">
+                <div class="feature-card">
                     <h2 class="card-title">Manage Challenges</h2>
-                    <p class="card-text">CRUD shortcuts and clean table previews for Admin role.</p>
-                </a>
+                    <p class="card-text">Create new CTF challenges or update existing ones.</p>
+                </div>
                 <div class="feature-card">
                     <h2 class="card-title">Manage Blog/News</h2>
-                    <p class="card-text">CRUD shortcuts and clean table previews for Admin role.</p>
+                    <p class="card-text">Publish posts, edit drafts, or take down outdated articles.</p>
                 </div>
                 <div class="feature-card">
                     <h2 class="card-title">Manage Announcements</h2>
-                    <p class="card-text">CRUD shortcuts and clean table previews for Admin role.</p>
+                    <p class="card-text">Post site-wide announcements visible to all users.</p>
                 </div>
                     <a href="~/Admin/Users.aspx" runat="server" class="feature-card" style="text-decoration:none; display:block;">
                         <h2 class="card-title">Manage Users</h2>
-                        <p class="card-text">CRUD shortcuts and clean table previews for Admin role.</p>
+                        <p class="card-text">View accounts, change roles, or suspend users.</p>
                     </a>
-            </div>
-
-            <%-- ===== TABLE PREVIEW ===== --%>
-            <h2 style="margin-bottom:var(--space-5);">Simple table previews</h2>
-            <div class="table-wrapper">
-                <table class="crud-table">
-                    <thead>
-                        <tr>
-                            <th>Area</th>
-                            <th>Recent item</th>
-                            <th>Status</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <asp:Repeater ID="rptPreview" runat="server">
-                            <ItemTemplate>
-                                <tr>
-                                    <td><%# Eval("Area") %></td>
-                                    <td><%# Eval("RecentItem") %></td>
-                                    <td><%# Eval("Status") %></td>
-                                    <td><%# Eval("Action") %></td>
-                                </tr>
-                            </ItemTemplate>
-                        </asp:Repeater>
-                    </tbody>
-                </table>
             </div>
 
         </main>
 
-        <%-- ===== FOOTER ===== --%>
         <footer class="footer">
             <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:1rem;">
                 <div>
@@ -125,7 +97,7 @@
                     <p style="color:var(--color-text-muted); font-size:0.875rem; margin-top:0.25rem;">Structured cybersecurity learning with integrated CTF simulation.</p>
                 </div>
                 <nav class="footer-links">
-                    <a href="~/Admin/TrainingCRUD.aspx" runat="server">Training</a>
+                    <a href="~/Training/Index.aspx" runat="server">Training</a>
                     <a href="~/Challenges/Index.aspx" runat="server">Challenges</a>
                     <a href="~/Blog/Index.aspx" runat="server">Blog</a>
                     <a href="~/FAQ.aspx" runat="server">FAQ</a>
