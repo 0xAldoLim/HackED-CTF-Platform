@@ -44,7 +44,6 @@
                 </p>
             </div>
 
-            <%--STAT CARDS--%>
             <div class="dashboard-grid" style="margin-bottom:var(--space-8);">
                 <div class="stat-card">
                     <span class="stat-value"><asp:Label ID="lblUserCount" runat="server">0</asp:Label></span>

@@ -12,7 +12,7 @@ public partial class Member_Dashboard : Page
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        // ---- Session guard: must be logged in as Player ----
+        //Session guard: must be logged in as Player
         if (Session["UserID"] == null)
         {
             Response.Redirect("~/Login.aspx");
@@ -46,14 +46,14 @@ public partial class Member_Dashboard : Page
         {
             conn.Open();
 
-            // ---- Solved challenges ----
+            //Solved challenges
             SqlCommand cmdSolved = new SqlCommand(
                 "SELECT COUNT(*) FROM [Submissions] WHERE [UserID] = @UID AND [IsCorrect] = 1", conn);
             cmdSolved.Parameters.AddWithValue("@UID", userID);
             int solved = (int)cmdSolved.ExecuteScalar();
             lblSolved.Text = solved.ToString();
 
-            // ---- Progress % vs total active challenges ----
+            //total active challenges
             SqlCommand cmdTotal = new SqlCommand(
                 "SELECT COUNT(*) FROM [Challenges] WHERE [IsActive] = 1", conn);
             int total = (int)cmdTotal.ExecuteScalar();
@@ -70,7 +70,7 @@ public partial class Member_Dashboard : Page
                 pnlProgressFill.Style["--progress-value"] = "0%";
             }
 
-            // ---- Team membership ----
+            //Team membership
             SqlCommand cmdTeam = new SqlCommand(
                 @"SELECT t.[TeamName] FROM [Teams] t
                   INNER JOIN [TeamMembers] tm ON t.[TeamID] = tm.[TeamID]
@@ -79,7 +79,6 @@ public partial class Member_Dashboard : Page
             object teamName = cmdTeam.ExecuteScalar();
             lblTeamStatus.Text = teamName != null ? teamName.ToString() : "No Team";
 
-            // ---- Current module (most recently created) ----
             SqlCommand cmdModule = new SqlCommand(
                 "SELECT TOP 1 [Title] FROM [Modules] ORDER BY [CreatedAt] DESC", conn);
             object moduleTitle = cmdModule.ExecuteScalar();
@@ -96,7 +95,7 @@ public partial class Member_Dashboard : Page
                 lblModuleProgress.Text = "Check back soon";
             }
 
-            // ---- Recent announcements (last 3) ----
+            //Recent announcements
             SqlCommand cmdAnnounce = new SqlCommand(
                 "SELECT TOP 3 [Title] FROM [Announcements] ORDER BY [CreatedAt] DESC", conn);
             SqlDataAdapter da = new SqlDataAdapter(cmdAnnounce);

@@ -12,9 +12,7 @@ public partial class Register : Page
         get { return System.Configuration.ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString; }
     }
 
-    // ---------------------------------------------------------------
-    // SHA-256 helper – matches the hash format used in schema.sql
-    // ---------------------------------------------------------------
+    // SHA-256 helper
     private string HashPassword(string password)
     {
         using (SHA256 sha256 = SHA256.Create())
@@ -33,9 +31,7 @@ public partial class Register : Page
             Response.Redirect("~/Member/Dashboard.aspx");
     }
 
-    // ---------------------------------------------------------------
-    // Custom validator – username uniqueness
-    // ---------------------------------------------------------------
+    //username uniqueness
     protected void cvUsername_ServerValidate(object source, System.Web.UI.WebControls.ServerValidateEventArgs args)
     {
         using (SqlConnection conn = new SqlConnection(ConnStr))
@@ -47,9 +43,7 @@ public partial class Register : Page
         }
     }
 
-    // ---------------------------------------------------------------
-    // Custom validator – email uniqueness
-    // ---------------------------------------------------------------
+    //email uniqueness
     protected void cvEmail_ServerValidate(object source, System.Web.UI.WebControls.ServerValidateEventArgs args)
     {
         using (SqlConnection conn = new SqlConnection(ConnStr))
@@ -61,9 +55,6 @@ public partial class Register : Page
         }
     }
 
-    // ---------------------------------------------------------------
-    // Register button click
-    // ---------------------------------------------------------------
     protected void btnRegister_Click(object sender, EventArgs e)
     {
         cvUsername.Validate();

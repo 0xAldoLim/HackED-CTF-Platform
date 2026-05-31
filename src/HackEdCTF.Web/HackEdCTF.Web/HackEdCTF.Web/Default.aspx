@@ -14,7 +14,6 @@
 <body>
     <form id="form1" runat="server">
 
-        <%-- ===== NAVBAR ===== --%>
         <nav class="navbar">
             <a href="Default.aspx" class="navbar-brand">
                 <img src="white.png" alt="HackEd" class="navbar-logo" />
@@ -33,11 +32,9 @@
             </div>
         </nav>
 
-        <%-- ===== HERO ===== --%>
         <section class="container section">
             <div class="split-layout">
 
-                <%-- Left: text + buttons --%>
                 <div>
                     <h1 style="font-family:var(--font-heading); font-size:clamp(2rem,5vw,3.25rem); font-weight:800; line-height:1.1; color:var(--color-text-strong); margin-bottom:var(--space-5);">
                         Structured learning.<br />Real hacking skills.
@@ -52,7 +49,6 @@
                     </div>
                 </div>
 
-                <%-- Right: terminal --%>
                 <div class="terminal-panel" style="transition: transform 0.2s ease, box-shadow 0.2s ease; cursor:default;"
                      onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 8px 32px rgba(0,255,163,0.15)'"
                      onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow=''">
@@ -68,7 +64,6 @@
             </div>
         </section>
 
-        <%-- ===== INTRO ===== --%>
         <section class="container section">
             <h2 style="font-family:var(--font-heading); font-size:1.5rem; font-weight:700; color:var(--color-text-strong); margin-bottom:var(--space-3);">
                 Short platform introduction
@@ -79,7 +74,6 @@
                 clean ASP.NET web app.
             </p>
 
-            <%-- Feature cards --%>
             <div class="card-grid" style="margin-bottom:var(--space-10);">
                 <div class="feature-card">
                     <h3 class="card-title">Training</h3>
@@ -103,7 +97,6 @@
                 </div>
             </div>
 
-            <%-- Stats row --%>
             <div class="dashboard-grid">
                 <div class="stat-card">
                     <span class="stat-value">1,250+</span>
@@ -124,7 +117,6 @@
             </div>
         </section>
 
-        <%-- ===== FOOTER ===== --%>
         <footer class="footer">
             <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:1rem;">
                 <div>

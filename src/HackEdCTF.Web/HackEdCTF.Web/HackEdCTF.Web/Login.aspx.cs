@@ -12,9 +12,7 @@ public partial class Login : Page
         get { return System.Configuration.ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString; }
     }
 
-    // ---------------------------------------------------------------
-    // SHA-256 helper – must match Register.aspx.cs exactly
-    // ---------------------------------------------------------------
+    // SHA-256 helper compare
     private string HashPassword(string password)
     {
         using (SHA256 sha256 = SHA256.Create())
@@ -53,7 +51,7 @@ public partial class Login : Page
             {
                 conn.Open();
 
-                // Accept email OR username in the same field
+                //Accept email OR username
                 SqlCommand cmd = new SqlCommand(
                     @"SELECT [UserID], [Username], [Email], [Role], [IsActive]
                       FROM [Users]
@@ -74,7 +72,7 @@ public partial class Login : Page
                         return;
                     }
 
-                    // Store session – role is either 'Player' or 'Admin'
+                    //role is either 'Player' or 'Admin'
                     Session["UserID"] = reader["UserID"].ToString();
                     Session["Username"] = reader["Username"].ToString();
                     Session["Email"] = reader["Email"].ToString();
@@ -95,14 +93,11 @@ public partial class Login : Page
         }
     }
 
-    // ---------------------------------------------------------------
-    // Helpers
-    // ---------------------------------------------------------------
     private void RedirectByRole(string role)
     {
         if (role == "Admin")
             Response.Redirect("~/Admin/Dashboard.aspx");
-        else // 'Player'
+        else
             Response.Redirect("~/Member/Dashboard.aspx");
     }
 

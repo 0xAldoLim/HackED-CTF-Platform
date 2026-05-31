@@ -82,7 +82,7 @@ public partial class Admin_Users : Page
         int targetUserID = int.Parse(e.CommandArgument.ToString());
         int currentUserID = int.Parse(Session["UserID"].ToString());
 
-        // Prevent admin from modifying their own account
+        //Prevent admin from modifying their own account
         if (targetUserID == currentUserID)
         {
             ShowAlert("You cannot modify your own account.", false);
@@ -109,7 +109,7 @@ public partial class Admin_Users : Page
                     cmd = new SqlCommand("UPDATE [Users] SET [IsActive] = 0 WHERE [UserID] = @UID", conn);
                     break;
                 case "Delete":
-                    // Delete submissions first to avoid FK constraint errors
+                    //Delete submissions first to avoid FK constraint errors
                     SqlCommand delSubs = new SqlCommand("DELETE FROM [Submissions] WHERE [UserID] = @UID", conn);
                     delSubs.Parameters.AddWithValue("@UID", targetUserID);
                     delSubs.ExecuteNonQuery();
