@@ -15,7 +15,7 @@ public partial class Scoreboard : Page
         if (!IsPostBack)
         {
             SetupNav();
-            LoadPlayers();
+            ShowPlayers();
         }
     }
 
@@ -24,14 +24,16 @@ public partial class Scoreboard : Page
         if (Session["UserID"] != null)
         {
             lnkNavDashboard.Text = Session["Username"].ToString();
-            lnkNavDashboard.NavigateUrl = Session["Role"].ToString() == "Admin"
-                ? "~/Admin/Dashboard.aspx" : "~/Member/Dashboard.aspx";
+            lnkNavDashboard.NavigateUrl = Session["Role"] != null && Session["Role"].ToString() == "Admin"
+                ? "~/Admin/Dashboard.aspx"
+                : "~/Member/Dashboard.aspx";
             lnkLogout.Visible = true;
             lnkGetStarted.Visible = false;
+            pnlNavAuth.Visible = true;
         }
         else
         {
-            lnkNavDashboard.Visible = false;
+            pnlNavAuth.Visible = false;
             lnkGetStarted.Visible = true;
         }
     }
@@ -44,6 +46,16 @@ public partial class Scoreboard : Page
 
     protected void btnTabPlayers_Click(object sender, EventArgs e)
     {
+        ShowPlayers();
+    }
+
+    protected void btnTabTeams_Click(object sender, EventArgs e)
+    {
+        ShowTeams();
+    }
+
+    private void ShowPlayers()
+    {
         pnlPlayers.Visible = true;
         pnlTeams.Visible = false;
         btnTabPlayers.CssClass = "filter-pill active";
@@ -51,7 +63,7 @@ public partial class Scoreboard : Page
         LoadPlayers();
     }
 
-    protected void btnTabTeams_Click(object sender, EventArgs e)
+    private void ShowTeams()
     {
         pnlPlayers.Visible = false;
         pnlTeams.Visible = true;
@@ -60,104 +72,177 @@ public partial class Scoreboard : Page
         LoadTeams();
     }
 
-    protected void txtSearchPlayers_TextChanged(object sender, EventArgs e)
-    {
-        LoadPlayers(txtSearchPlayers.Text.Trim());
-    }
-
-    protected void txtSearchTeams_TextChanged(object sender, EventArgs e)
-    {
-        LoadTeams(txtSearchTeams.Text.Trim());
-    }
-
-    private void LoadPlayers(string search = "")
+    private void LoadPlayers()
     {
         using (SqlConnection conn = new SqlConnection(ConnStr))
         {
             conn.Open();
             SqlCommand cmd = new SqlCommand(@"
-                WITH Ranked AS (
+                WITH CorrectSolves AS
+                (
                     SELECT
-                        ROW_NUMBER() OVER (ORDER BY u.[TotalScore] DESC) AS RowNum,
-                        u.[Username],
-                        u.[TotalScore],
-                        COUNT(s.[SubmissionID]) AS SolvedCount,
-                        MAX(s.[SubmittedAt]) AS LastSolveDate,
-                        t.[TeamName]
+                        s.[UserID],
+                        s.[ChallengeID],
+                        MAX(s.[SubmittedAt]) AS LastSolveDate
+                    FROM [Submissions] s
+                    WHERE s.[IsCorrect] = 1
+                    GROUP BY s.[UserID], s.[ChallengeID]
+                ),
+                Ranked AS
+                (
+                    SELECT TOP 10
+                        u.[Username] AS DisplayName,
+                        COUNT(cs.[ChallengeID]) AS Solves,
+                        ISNULL(u.[TotalScore], 0) AS Score,
+                        MAX(cs.[LastSolveDate]) AS LastSolveDate
                     FROM [Users] u
-                    LEFT JOIN [Submissions] s ON u.[UserID] = s.[UserID] AND s.[IsCorrect] = 1
-                    LEFT JOIN [TeamMembers] tm ON u.[UserID] = tm.[UserID]
-                    LEFT JOIN [Teams] t ON tm.[TeamID] = t.[TeamID]
-                    WHERE u.[Role] = 'Player' AND u.[IsActive] = 1
-                    GROUP BY u.[Username], u.[TotalScore], t.[TeamName]
+                    LEFT JOIN CorrectSolves cs ON u.[UserID] = cs.[UserID]
+                    WHERE ISNULL(u.[IsActive], 1) = 1
+                      AND ISNULL(u.[Role], 'Player') <> 'Admin'
+                    GROUP BY u.[UserID], u.[Username], u.[TotalScore]
+                    ORDER BY COUNT(cs.[ChallengeID]) DESC, ISNULL(u.[TotalScore], 0) DESC, u.[Username] ASC
                 )
-                SELECT RowNum, Username, TotalScore, SolvedCount, TeamName,
-                    CASE
-                        WHEN DATEDIFF(MINUTE, LastSolveDate, GETDATE()) < 60
-                            THEN CAST(DATEDIFF(MINUTE, LastSolveDate, GETDATE()) AS VARCHAR) + 'm ago'
-                        WHEN DATEDIFF(HOUR, LastSolveDate, GETDATE()) < 24
-                            THEN CAST(DATEDIFF(HOUR, LastSolveDate, GETDATE()) AS VARCHAR) + 'h ago'
-                        WHEN LastSolveDate IS NULL THEN NULL
-                        ELSE CONVERT(VARCHAR, LastSolveDate, 107)
-                    END AS LastSolve
+                SELECT
+                    ROW_NUMBER() OVER (ORDER BY Solves DESC, Score DESC, DisplayName ASC) AS RowNum,
+                    DisplayName,
+                    Solves,
+                    Score,
+                    LastSolveDate
                 FROM Ranked
-                WHERE (@Search = '' OR Username LIKE '%' + @Search + '%')
                 ORDER BY RowNum", conn);
 
-            cmd.Parameters.AddWithValue("@Search", search);
-
-            SqlDataAdapter da = new SqlDataAdapter(cmd);
             DataTable dt = new DataTable();
-            da.Fill(dt);
+            new SqlDataAdapter(cmd).Fill(dt);
+            AddBarWidths(dt);
 
-            DataTable top3 = dt.Clone();
-            for (int i = 0; i < Math.Min(3, dt.Rows.Count); i++)
-                top3.ImportRow(dt.Rows[i]);
-
+            DataTable chartRows = FilterRowsWithSolves(dt);
+            DataTable top3 = CopyTopRows(chartRows, 3);
             rptTopPlayers.DataSource = top3;
             rptTopPlayers.DataBind();
 
-            rptPlayers.DataSource = dt;
+            rptPlayers.DataSource = chartRows;
             rptPlayers.DataBind();
-            pnlNoPlayers.Visible = (dt.Rows.Count == 0);
+
+            rptPlayerChart.DataSource = chartRows;
+            rptPlayerChart.DataBind();
+
+            pnlNoPlayers.Visible = chartRows.Rows.Count == 0;
+            pnlNoPlayerChart.Visible = chartRows.Rows.Count == 0;
         }
     }
 
-    private void LoadTeams(string search = "")
+    private void LoadTeams()
     {
         using (SqlConnection conn = new SqlConnection(ConnStr))
         {
             conn.Open();
             SqlCommand cmd = new SqlCommand(@"
+                WITH TeamSolves AS
+                (
+                    SELECT
+                        tm.[TeamID],
+                        s.[ChallengeID],
+                        MAX(s.[SubmittedAt]) AS LastSolveDate
+                    FROM [TeamMembers] tm
+                    INNER JOIN [Submissions] s ON tm.[UserID] = s.[UserID]
+                    WHERE s.[IsCorrect] = 1
+                    GROUP BY tm.[TeamID], s.[ChallengeID]
+                ),
+                TeamSolveCounts AS
+                (
+                    SELECT
+                        [TeamID],
+                        COUNT([ChallengeID]) AS Solves
+                    FROM TeamSolves
+                    GROUP BY [TeamID]
+                ),
+                MemberCounts AS
+                (
+                    SELECT
+                        [TeamID],
+                        COUNT(DISTINCT [UserID]) AS MemberCount
+                    FROM [TeamMembers]
+                    GROUP BY [TeamID]
+                ),
+                Ranked AS
+                (
+                    SELECT TOP 10
+                        t.[TeamName] AS DisplayName,
+                        ISNULL(tsc.[Solves], 0) AS Solves,
+                        ISNULL(t.[TeamScore], 0) AS Score,
+                        ISNULL(mc.[MemberCount], 0) AS MemberCount
+                    FROM [Teams] t
+                    LEFT JOIN TeamSolveCounts tsc ON t.[TeamID] = tsc.[TeamID]
+                    LEFT JOIN MemberCounts mc ON t.[TeamID] = mc.[TeamID]
+                    ORDER BY ISNULL(tsc.[Solves], 0) DESC, ISNULL(t.[TeamScore], 0) DESC, t.[TeamName] ASC
+                )
                 SELECT
-                    ROW_NUMBER() OVER (ORDER BY t.[TeamScore] DESC) AS RowNum,
-                    t.[TeamName],
-                    t.[TeamScore],
-                    COUNT(tm.[UserID]) AS MemberCount,
-                    u.[Username] AS LeaderName
-                FROM [Teams] t
-                INNER JOIN [Users] u ON t.[LeaderUserID] = u.[UserID]
-                LEFT JOIN [TeamMembers] tm ON t.[TeamID] = tm.[TeamID]
-                WHERE (@Search = '' OR t.[TeamName] LIKE '%' + @Search + '%')
-                GROUP BY t.[TeamName], t.[TeamScore], u.[Username]
-                ORDER BY t.[TeamScore] DESC", conn);
+                    ROW_NUMBER() OVER (ORDER BY Solves DESC, Score DESC, DisplayName ASC) AS RowNum,
+                    DisplayName,
+                    Solves,
+                    Score,
+                    MemberCount
+                FROM Ranked
+                ORDER BY RowNum", conn);
 
-            cmd.Parameters.AddWithValue("@Search", search);
-
-            SqlDataAdapter da = new SqlDataAdapter(cmd);
             DataTable dt = new DataTable();
-            da.Fill(dt);
+            new SqlDataAdapter(cmd).Fill(dt);
+            AddBarWidths(dt);
 
-            DataTable top3 = dt.Clone();
-            for (int i = 0; i < Math.Min(3, dt.Rows.Count); i++)
-                top3.ImportRow(dt.Rows[i]);
-
+            DataTable chartRows = FilterRowsWithSolves(dt);
+            DataTable top3 = CopyTopRows(chartRows, 3);
             rptTopTeams.DataSource = top3;
             rptTopTeams.DataBind();
 
-            rptTeams.DataSource = dt;
+            rptTeams.DataSource = chartRows;
             rptTeams.DataBind();
-            pnlNoTeams.Visible = (dt.Rows.Count == 0);
+
+            rptTeamChart.DataSource = chartRows;
+            rptTeamChart.DataBind();
+
+            pnlNoTeams.Visible = chartRows.Rows.Count == 0;
+            pnlNoTeamChart.Visible = chartRows.Rows.Count == 0;
         }
+    }
+
+    private static DataTable CopyTopRows(DataTable source, int count)
+    {
+        DataTable result = source.Clone();
+        for (int i = 0; i < Math.Min(count, source.Rows.Count); i++)
+            result.ImportRow(source.Rows[i]);
+        return result;
+    }
+
+    private static DataTable FilterRowsWithSolves(DataTable source)
+    {
+        DataTable result = source.Clone();
+        foreach (DataRow row in source.Rows)
+        {
+            if (Convert.ToInt32(row["Solves"]) > 0)
+                result.ImportRow(row);
+        }
+        return result;
+    }
+
+    private static void AddBarWidths(DataTable table)
+    {
+        if (!table.Columns.Contains("BarWidth"))
+            table.Columns.Add("BarWidth", typeof(int));
+
+        int maxSolves = 0;
+        foreach (DataRow row in table.Rows)
+            maxSolves = Math.Max(maxSolves, Convert.ToInt32(row["Solves"]));
+
+        foreach (DataRow row in table.Rows)
+        {
+            int solves = Convert.ToInt32(row["Solves"]);
+            row["BarWidth"] = maxSolves == 0 ? 0 : Math.Max(8, (int)Math.Round((solves * 100.0) / maxSolves));
+        }
+    }
+
+    public string FormatDate(object value)
+    {
+        if (value == null || value == DBNull.Value) return "-";
+        return Convert.ToDateTime(value).ToString("dd MMM yyyy");
     }
 }

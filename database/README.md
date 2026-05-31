@@ -58,9 +58,10 @@ If the database opens but CTF tables or columns are missing, run:
 
 1. `database/repair/repair_challenge_schema.sql`
 2. `database/schema/challenges_schema.sql`
-3. `database/seed-data/challenges_seed.sql`
+3. `database/schema/team_scoreboard_schema.sql`
+4. `database/seed-data/challenges_seed.sql`
 
-The repair and schema scripts are idempotent. They add missing CTF challenge tables/columns without dropping existing data.
+The repair and schema scripts are idempotent. They add missing CTF challenge, team, and scoreboard tables/columns without dropping existing data.
 
 ## Verify Tables
 

@@ -19,6 +19,7 @@
     protected global::System.Web.UI.WebControls.LinkButton lnkBackToTeams;
     protected global::System.Web.UI.WebControls.Label lblTeamName;
     protected global::System.Web.UI.WebControls.Label lblTeamScore;
+    protected global::System.Web.UI.WebControls.Label lblTeamSolves;
     protected global::System.Web.UI.WebControls.Label lblTeamRank;
     protected global::System.Web.UI.WebControls.Label lblMemberCount;
     protected global::System.Web.UI.WebControls.Repeater rptMembers;
