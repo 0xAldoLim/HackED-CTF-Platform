@@ -1,46 +1,132 @@
-# HackEd CTF
+# HackEd CTF Platform
 
-HackEd CTF is a web-based cybersecurity learning system with integrated Capture the Flag learning features. The platform is planned to help users learn cybersecurity concepts through structured training modules, practical challenges, team participation, score tracking, and supporting learning content.
+HackEd CTF is a university WAPP group assignment project. It is a web-based cybersecurity learning platform with user authentication, training modules, CTF challenges, admin management pages, blog/announcement content, teams, and scoreboard features.
 
-## Read This First Before Proceeding
+## How To Run The Website
 
-This repository is for implementation only. Before building any page, team members must read the CSS style guide and use the shared global CSS from:
+This project is an ASP.NET Web Forms application using .NET Framework 4.8 and SQL Server LocalDB.
 
-`src/HackEdCTF.Web/wwwroot/css/site.css`
+Use Visual Studio on Windows.
 
-Do not create separate page styling that ignores the shared theme. Use the provided classes for layout, buttons, cards, forms, tables, badges, modals, filters, navbar, and footer.
+1. Clone or download this repository.
+2. Open this solution file in Visual Studio:
 
-Keep the website visually consistent with the HackEd Figma wireframe and brand theme. The Figma reference is:
+```text
+src\HackEdCTF.Web\HackEdCTF.Web\HackEdCTF.Web.sln
+```
 
-`https://www.figma.com/design/PQ137oFeiHKgabeI4XLMH6/HackEd?node-id=14-2&t=RjB7PnhA0zh8kgaZ-1`
+3. Restore NuGet packages if Visual Studio prompts for it.
+4. Build the solution.
+5. Run the project with IIS Express.
 
-This shared CSS is the main design compass for the team. The purpose is to prevent every teammate from creating a visually different webpage design. Main should stay stable, but this specific CSS foundation belongs in main because everyone needs it.
+The main web project is:
 
-## Main Planned Features
+```text
+src\HackEdCTF.Web\HackEdCTF.Web\HackEdCTF.Web
+```
 
-- Training modules divided into Beginner, Advanced, and Expert levels
-- CTF challenges divided into Easy, Medium, and Hard difficulties
+The LocalDB database files are stored in:
+
+```text
+src\HackEdCTF.Web\HackEdCTF.Web\HackEdCTF.Web\App_Data\HackEdDB.mdf
+src\HackEdCTF.Web\HackEdCTF.Web\HackEdCTF.Web\App_Data\HackEdDB_log.ldf
+```
+
+## If The Database Cannot Open
+
+If Visual Studio shows an error similar to:
+
+```text
+Cannot open database ... App_Data\HackEdDB.mdf requested by the login. The login failed.
+```
+
+do not delete the database and do not create a new empty database. The `.mdf` file contains project data.
+
+Try this safe LocalDB reset:
+
+1. Stop the website and close IIS Express.
+2. Open PowerShell or Developer Command Prompt.
+3. Stop LocalDB:
+
+```powershell
+sqllocaldb stop MSSQLLocalDB
+```
+
+4. Reopen Visual Studio.
+5. Open SQL Server Object Explorer.
+6. Connect to:
+
+```text
+(localdb)\MSSQLLocalDB
+```
+
+7. If an old `HackEdDB` database is listed and points to a different clone folder, detach/remove that database registration only.
+8. Do not delete the physical `.mdf` file.
+9. Attach the database from this clone:
+
+```text
+src\HackEdCTF.Web\HackEdCTF.Web\HackEdCTF.Web\App_Data\HackEdDB.mdf
+```
+
+10. Run the website again.
+
+To check whether LocalDB is attached to the wrong folder, run this in SQL Server Object Explorer:
+
+```sql
+SELECT DB_NAME(database_id) AS DatabaseName, name AS LogicalName, physical_name
+FROM sys.master_files
+WHERE physical_name LIKE '%HackEdDB%';
+```
+
+If needed, detach the stale LocalDB registration without deleting the file:
+
+```sql
+USE master;
+ALTER DATABASE [HackEdDB] SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
+EXEC sp_detach_db N'HackEdDB';
+```
+
+Then attach the `HackEdDB.mdf` file from this repository's `App_Data` folder.
+
+## Optional Database Repair Scripts
+
+If the website opens but challenge tables or sample challenges are missing, run these scripts against `HackEdDB.mdf`:
+
+```text
+database\repair\repair_challenge_schema.sql
+database\schema\challenges_schema.sql
+database\seed-data\challenges_seed.sql
+```
+
+These scripts are intended to be safe to run more than once. They add missing CTF challenge tables/columns and sample challenge rows without dropping existing data.
+
+## What Not To Do
+
+- Do not delete `HackEdDB.mdf`.
+- Do not replace the database with a blank database.
+- Do not drop tables.
+- Do not delete users, roles, teams, training content, blog/news data, CTF challenges, submissions, or scoreboard data.
+- Do not run destructive SQL unless the group has agreed to reset the database.
+
+## Main Features
+
 - User registration and login
-- Player dashboard
-- Admin dashboard
-- Team creation and joining
-- Scoreboard
-- Official writeups
-- Blog or announcement content
-- Cybersecurity news updates
-- FAQ page
-- Builder/about page
+- Member dashboard
+- Training module listing and detail pages
+- CTF challenge listing, filtering, detail view, flag submission, and score update
+- Admin challenge management
+- Admin training/content management
+- Blog and announcement pages
+- Team and scoreboard features
 
-## Wireframe on Figma
+## Project Structure
 
-- https://www.figma.com/design/PQ137oFeiHKgabeI4XLMH6/HackEd?node-id=14-2&t=RjB7PnhA0zh8kgaZ-1
-
-## Planned Technology Stack
-
-- Backend: ASP.NET Core / .NET
-- Frontend: HTML5, CSS, JavaScript, Razor Pages or MVC depending on later decision
-- Database: MS SQL Server
-- Version control: Git and GitHub
+- `src/HackEdCTF.Web/HackEdCTF.Web/HackEdCTF.Web.sln` - Visual Studio solution file
+- `src/HackEdCTF.Web/HackEdCTF.Web/HackEdCTF.Web/` - Main ASP.NET Web Forms application
+- `src/HackEdCTF.Web/HackEdCTF.Web/HackEdCTF.Web/Web.config` - Application configuration and LocalDB connection string
+- `src/HackEdCTF.Web/HackEdCTF.Web/HackEdCTF.Web/App_Data/` - SQL Server LocalDB database files
+- `src/HackEdCTF.Web/HackEdCTF.Web/HackEdCTF.Web/css/site.css` - Shared HackEd styling
+- `database/` - Database setup, repair, schema, and seed scripts
 
 ## Team Members
 
@@ -48,29 +134,3 @@ This shared CSS is the main design compass for the team. The purpose is to preve
 - Hansen
 - Archie
 - Darren
-
-## Repository Structure
-
-- `src/` - Main application source code will be placed here later.
-- `src/HackEdCTF.Web/` - Placeholder for the future ASP.NET Core web application project.
-- `src/HackEdCTF.Web/wwwroot/css/site.css` - Shared global CSS system for the HackEd interface.
-- `src/HackEdCTF.Web/wwwroot/css/STYLE_GUIDE.md` - Styling rules for all team members.
-- `database/` - Future database planning and implementation files for schema and seed data.
-- `assets/` - Future implementation assets such as images, icons, and wireframes.
-- `tests/` - Future automated test projects and test-related files.
-
-This repository is for program implementation only. Documentation, reports, meeting notes, and assignment writing are handled outside this repository.
-
-## Branch Workflow
-
-- `main` is the stable branch.
-- Each team member works on their own branch:
-  - `aldo`
-  - `hansen`
-  - `archie`
-  - `darren`
-- Changes should be merged into `main` only after review and testing.
-
-## Current Status
-
-This repository currently contains only implementation placeholders and no actual application code yet.
