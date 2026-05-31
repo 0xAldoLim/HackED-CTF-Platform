@@ -103,19 +103,19 @@
             <div class="dashboard-grid">
                 <a href="~/Training/ModuleListing.aspx" runat="server" class="quick-link-card" style="text-decoration:none;">
                     <h3 class="card-title">Training</h3>
-                    <p class="card-text">Jump straight into the section without spelunking through menus.</p>
+                    <p class="card-text">Jump straight into hands-on lessons and sharpen your skills without digging through menus.</p>
                 </a>
                 <a href="~/Challenges/Index.aspx" runat="server" class="quick-link-card" style="text-decoration:none;">
                     <h3 class="card-title">Challenges</h3>
-                    <p class="card-text">Jump straight into the section without spelunking through menus.</p>
+                    <p class="card-text">Jump into real CTF challenges and start solving right away, no extra clicks, just action.</p>
                 </a>
                 <a href="../Scoreboard.aspx" runat="server" class="quick-link-card" style="text-decoration:none;">
                     <h3 class="card-title">Scoreboard</h3>
-                    <p class="card-text">Jump straight into the section without spelunking through menus.</p>
+                    <p class="card-text">See how you stack up against others and track your climb up the rankings in real time.</p>
                 </a>
                 <a href="~/Blog/Index.aspx" runat="server" class="quick-link-card" style="text-decoration:none;">
                     <h3 class="card-title">Blog</h3>
-                    <p class="card-text">Jump straight into the section without spelunking through menus.</p>
+                    <p class="card-text">Stay updated with the latest posts, insights, and announcements from the platform.</p>
                 </a>
                 <a href="~/Member/Team.aspx" runat="server" class="quick-link-card" style="text-decoration:none;">
                     <h3 class="card-title">Team</h3>
