@@ -68,13 +68,18 @@
     <Content Include="Admin\ChallengeEdit.aspx" />
     <Content Include="Admin\Challenges.aspx" />
     <Content Include="Admin\Dashboard.aspx" />
+    <Content Include="Admin\PostEdit.aspx" />
+    <Content Include="Admin\Posts.aspx" />
     <Content Include="Admin\TrainingCRUD.aspx" />
     <Content Include="Admin\TrainingEditCreate.aspx" />
     <Content Include="Admin\Users.aspx" />
+    <Content Include="Announcements.aspx" />
     <Content Include="App_Data\HackEdDB.mdf" />
     <Content Include="App_Data\HackEdDB_log.ldf">
       <DependentUpon>HackEdDB.mdf</DependentUpon>
     </Content>
+    <Content Include="Blog\Article.aspx" />
+    <Content Include="Blog\Index.aspx" />
     <Content Include="css\site.css" />
     <Content Include="Challenges\Index.aspx" />
     <Content Include="Default.aspx" />
@@ -92,6 +97,10 @@
     <Content Include="white.png" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Announcements.aspx.cs">
+      <DependentUpon>Announcements.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Admin\ChallengeEdit.aspx.cs">
       <DependentUpon>ChallengeEdit.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -113,6 +122,14 @@
     <Compile Include="Admin\Dashboard.aspx.designer.cs">
       <DependentUpon>Dashboard.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Admin\PostEdit.aspx.cs">
+      <DependentUpon>PostEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\Posts.aspx.cs">
+      <DependentUpon>Posts.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Admin\TrainingCRUD.aspx.cs">
       <DependentUpon>TrainingCRUD.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -133,6 +150,14 @@
     </Compile>
     <Compile Include="Admin\Users.aspx.designer.cs">
       <DependentUpon>Users.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Blog\Article.aspx.cs">
+      <DependentUpon>Article.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Blog\Index.aspx.cs">
+      <DependentUpon>Index.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Challenges\Index.aspx.cs">
       <DependentUpon>Index.aspx</DependentUpon>
