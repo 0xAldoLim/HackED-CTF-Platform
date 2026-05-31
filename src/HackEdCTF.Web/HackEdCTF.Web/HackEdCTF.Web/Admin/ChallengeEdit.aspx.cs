@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Web;
 using System.Web.UI;
@@ -120,16 +121,13 @@ public partial class Admin_ChallengeEdit : Page
         using (SqlConnection conn = new SqlConnection(ConnStr))
         {
             conn.Open();
-            bool hasLegacyFlagColumn = ChallengeColumnExists(conn, "Flag");
-            string sql = hasLegacyFlagColumn
-                ? @"INSERT INTO [Challenges] ([Title], [Description], [Category], [Difficulty], [Points], [CorrectFlag], [Flag], [Hint], [FileUrl], [IsActive], [CreatedAt])
-                    VALUES (@Title, @Description, @Category, @Difficulty, @Points, @CorrectFlag, @CorrectFlag, @Hint, @FileUrl, @IsActive, GETDATE())"
-                : @"INSERT INTO [Challenges] ([Title], [Description], [Category], [Difficulty], [Points], [CorrectFlag], [Hint], [FileUrl], [IsActive], [CreatedAt])
-                    VALUES (@Title, @Description, @Category, @Difficulty, @Points, @CorrectFlag, @Hint, @FileUrl, @IsActive, GETDATE())";
+            Dictionary<string, bool> columns = GetChallengeColumns(conn);
+            string sql = BuildInsertSql(columns);
 
             SqlCommand cmd = new SqlCommand(sql, conn);
             AddCommonParameters(cmd, points);
             cmd.Parameters.AddWithValue("@CorrectFlag", txtCorrectFlag.Text.Trim());
+            cmd.Parameters.AddWithValue("@CreatedByUserID", int.Parse(Session["UserID"].ToString()));
             cmd.ExecuteNonQuery();
         }
 
@@ -141,7 +139,7 @@ public partial class Admin_ChallengeEdit : Page
         using (SqlConnection conn = new SqlConnection(ConnStr))
         {
             conn.Open();
-            bool hasLegacyFlagColumn = ChallengeColumnExists(conn, "Flag");
+            Dictionary<string, bool> columns = GetChallengeColumns(conn);
             string sql = @"
                 UPDATE [Challenges]
                 SET [Title] = @Title,
@@ -156,7 +154,7 @@ public partial class Admin_ChallengeEdit : Page
             if (txtCorrectFlag.Text.Trim().Length > 0)
             {
                 sql += ", [CorrectFlag] = @CorrectFlag";
-                if (hasLegacyFlagColumn)
+                if (columns.ContainsKey("Flag"))
                     sql += ", [Flag] = @CorrectFlag";
             }
 
@@ -165,6 +163,7 @@ public partial class Admin_ChallengeEdit : Page
             SqlCommand cmd = new SqlCommand(sql, conn);
             AddCommonParameters(cmd, points);
             cmd.Parameters.AddWithValue("@ChallengeID", challengeID);
+            cmd.Parameters.AddWithValue("@CreatedByUserID", int.Parse(Session["UserID"].ToString()));
             if (txtCorrectFlag.Text.Trim().Length > 0)
                 cmd.Parameters.AddWithValue("@CorrectFlag", txtCorrectFlag.Text.Trim());
 
@@ -186,16 +185,48 @@ public partial class Admin_ChallengeEdit : Page
         cmd.Parameters.AddWithValue("@IsActive", chkIsActive.Checked);
     }
 
-    private bool ChallengeColumnExists(SqlConnection conn, string columnName)
+    private string BuildInsertSql(Dictionary<string, bool> columns)
+    {
+        List<string> insertColumns = new List<string>();
+        List<string> values = new List<string>();
+
+        AddInsertColumn(insertColumns, values, columns, "Title", "@Title");
+        AddInsertColumn(insertColumns, values, columns, "Description", "@Description");
+        AddInsertColumn(insertColumns, values, columns, "Category", "@Category");
+        AddInsertColumn(insertColumns, values, columns, "Difficulty", "@Difficulty");
+        AddInsertColumn(insertColumns, values, columns, "Points", "@Points");
+        AddInsertColumn(insertColumns, values, columns, "CorrectFlag", "@CorrectFlag");
+        AddInsertColumn(insertColumns, values, columns, "Flag", "@CorrectFlag");
+        AddInsertColumn(insertColumns, values, columns, "Hint", "@Hint");
+        AddInsertColumn(insertColumns, values, columns, "FileUrl", "@FileUrl");
+        AddInsertColumn(insertColumns, values, columns, "IsActive", "@IsActive");
+        AddInsertColumn(insertColumns, values, columns, "CreatedAt", "GETDATE()");
+        AddInsertColumn(insertColumns, values, columns, "CreatedByUserID", "@CreatedByUserID");
+
+        return "INSERT INTO [Challenges] (" + string.Join(", ", insertColumns) + ") VALUES (" + string.Join(", ", values) + ")";
+    }
+
+    private void AddInsertColumn(List<string> insertColumns, List<string> values, Dictionary<string, bool> columns, string columnName, string valueExpression)
+    {
+        if (!columns.ContainsKey(columnName)) return;
+
+        insertColumns.Add("[" + columnName + "]");
+        values.Add(valueExpression);
+    }
+
+    private Dictionary<string, bool> GetChallengeColumns(SqlConnection conn)
     {
         SqlCommand cmd = new SqlCommand(@"
-            SELECT COUNT(*)
+            SELECT name
             FROM sys.columns
-            WHERE object_id = OBJECT_ID(N'dbo.Challenges')
-              AND name = @ColumnName",
+            WHERE object_id = OBJECT_ID(N'dbo.Challenges')",
             conn);
-        cmd.Parameters.AddWithValue("@ColumnName", columnName);
-        return (int)cmd.ExecuteScalar() > 0;
+        SqlDataReader reader = cmd.ExecuteReader();
+        Dictionary<string, bool> columns = new Dictionary<string, bool>(StringComparer.OrdinalIgnoreCase);
+        while (reader.Read())
+            columns[reader["name"].ToString()] = true;
+        reader.Close();
+        return columns;
     }
 
     private void SetDropDownValue(DropDownList ddl, string value)
