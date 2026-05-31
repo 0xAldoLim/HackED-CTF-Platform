@@ -101,6 +101,9 @@
       <DependentUpon>Announcements.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Announcements.aspx.designer.cs">
+      <DependentUpon>Announcements.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Admin\ChallengeEdit.aspx.cs">
       <DependentUpon>ChallengeEdit.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -126,9 +129,15 @@
       <DependentUpon>PostEdit.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Admin\PostEdit.aspx.designer.cs">
+      <DependentUpon>PostEdit.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Admin\Posts.aspx.cs">
       <DependentUpon>Posts.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\Posts.aspx.designer.cs">
+      <DependentUpon>Posts.aspx</DependentUpon>
     </Compile>
     <Compile Include="Admin\TrainingCRUD.aspx.cs">
       <DependentUpon>TrainingCRUD.aspx</DependentUpon>
@@ -155,9 +164,15 @@
       <DependentUpon>Article.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Blog\Article.aspx.designer.cs">
+      <DependentUpon>Article.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Blog\Index.aspx.cs">
       <DependentUpon>Index.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Blog\Index.aspx.designer.cs">
+      <DependentUpon>Index.aspx</DependentUpon>
     </Compile>
     <Compile Include="Challenges\Index.aspx.cs">
       <DependentUpon>Index.aspx</DependentUpon>
