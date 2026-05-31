@@ -219,13 +219,8 @@ public partial class Challenges_Index : Page
             pnlHint.Visible = hint.Trim().Length > 0;
             lblHint.Text = HttpUtility.HtmlEncode(hint);
 
-            string fileUrl = reader["FileUrl"] == DBNull.Value ? "" : reader["FileUrl"].ToString();
-            pnlFile.Visible = fileUrl.Trim().Length > 0;
-            if (pnlFile.Visible)
-            {
-                lnkFile.Text = HttpUtility.HtmlEncode(fileUrl);
-                lnkFile.NavigateUrl = fileUrl;
-            }
+            string fileUrl = reader["FileUrl"] == DBNull.Value ? "" : reader["FileUrl"].ToString().Trim();
+            BindResourceLink(fileUrl);
 
             bool solved = Convert.ToBoolean(reader["IsSolved"]);
             pnlSubmitLogin.Visible = !IsLoggedIn;
@@ -345,6 +340,23 @@ public partial class Challenges_Index : Page
         lblFlagFeedback.Text = message;
         pnlFlagFeedback.Visible = true;
         pnlDetail.Visible = true;
+    }
+
+    private void BindResourceLink(string fileUrl)
+    {
+        if (string.IsNullOrWhiteSpace(fileUrl))
+        {
+            pnlFile.Visible = false;
+            lnkFile.Text = "";
+            lnkFile.NavigateUrl = "";
+            lnkFile.ToolTip = "";
+            return;
+        }
+
+        pnlFile.Visible = true;
+        lnkFile.Text = "Open Resource";
+        lnkFile.NavigateUrl = fileUrl;
+        lnkFile.ToolTip = fileUrl;
     }
 
     private bool ChallengeColumnExists(SqlConnection conn, SqlTransaction tx, string columnName)

@@ -112,6 +112,7 @@
 
                         <asp:Panel ID="pnlFile" runat="server" Visible="false" CssClass="flag-feedback">
                             <strong>Resource:</strong>
+                            &nbsp;
                             <asp:HyperLink ID="lnkFile" runat="server" Target="_blank" rel="noopener noreferrer"></asp:HyperLink>
                         </asp:Panel>
 
