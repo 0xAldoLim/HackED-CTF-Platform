@@ -68,10 +68,10 @@
                 <h2 class="card-title">The Team</h2>
                 <p class="card-text">HackEd was built by Group 24, Tutorial 3, intake APD2F2509CS(CYB), for the Web Applications (CT050-3-2-WAPP) module at Asia Pacific University of Technology and Innovation.</p>
                 <ul class="card-text" style="line-height:2;">
-                    <li>Hansen Nicholas Can (TP075390) — Group Leader, Training Modules</li>
-                    <li>Archie Nicholaus Yiedri (TP081430) — Auth, Dashboards, User Management</li>
-                    <li>Aldo Lim Saputra (TP078139) — CTF Challenges, Flag Submission, Admin Challenge Management</li>
-                    <li>Darren Elsington (TP079965) — Blog, News, Announcements, FAQ, About, Admin Content Management</li>
+                    <li>Hansen Nicholas Can (TP075390) | Group Leader, Training Modules</li>
+                    <li>Archie Nicholaus Yiedri (TP081430) | Auth, Dashboards, User Management</li>
+                    <li>Aldo Lim Saputra (TP078139) | CTF Challenges, Flag Submission, Admin Challenge Management</li>
+                    <li>Darren Elsington (TP079965) | Blog, News, Announcements, FAQ, About, Admin Content Management</li>
                 </ul>
             </div>
 

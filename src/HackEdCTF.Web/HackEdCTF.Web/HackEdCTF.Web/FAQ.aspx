@@ -50,7 +50,7 @@
 
                 <div class="card">
                     <h3 class="card-title">What's the flag format?</h3>
-                    <p class="card-text">Usually <code>HackEd{...}</code>, but check the challenge brief — submit exactly what it says.</p>
+                    <p class="card-text">Usually <code>HackEd{...}</code>, but check the challenge brief  submit exactly what it says.</p>
                 </div>
 
                 <div class="card">
@@ -65,7 +65,7 @@
 
                 <div class="card">
                     <h3 class="card-title">How often does the scoreboard update?</h3>
-                    <p class="card-text">Live — every correct flag bumps it. Just refresh to see the latest.</p>
+                    <p class="card-text">Live, every correct flag bumps it. Just refresh to see the latest.</p>
                 </div>
 
             </div>
