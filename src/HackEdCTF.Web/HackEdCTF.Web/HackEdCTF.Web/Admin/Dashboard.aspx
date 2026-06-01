@@ -74,14 +74,14 @@
                     <h2 class="card-title">Manage Challenges</h2>
                     <p class="card-text">CRUD shortcuts and clean table previews for Admin role.</p>
                 </a>
-                <div class="feature-card">
+                <a href="~/Admin/Posts.aspx" runat="server" class="feature-card" style="text-decoration:none; display:block;">
                     <h2 class="card-title">Manage Blog/News</h2>
                     <p class="card-text">CRUD shortcuts and clean table previews for Admin role.</p>
-                </div>
-                <div class="feature-card">
+                </a>
+                <a href="~/Admin/Posts.aspx" runat="server" class="feature-card" style="text-decoration:none; display:block;">
                     <h2 class="card-title">Manage Announcements</h2>
                     <p class="card-text">CRUD shortcuts and clean table previews for Admin role.</p>
-                </div>
+                </a>
                     <a href="~/Admin/Users.aspx" runat="server" class="feature-card" style="text-decoration:none; display:block;">
                         <h2 class="card-title">Manage Users</h2>
                         <p class="card-text">CRUD shortcuts and clean table previews for Admin role.</p>
