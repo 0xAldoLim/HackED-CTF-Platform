@@ -88,6 +88,15 @@ EXEC sp_detach_db N'HackEdDB';
 
 Then attach the `HackEdDB.mdf` file from this repository's `App_Data` folder.
 
+If there is any error with SQL Database or Building the website delete these folders:
+	~\HackED-CTF-Platform\src\HackEdCTF.Web\HackEdCTF.Web\.vs
+	~\HackED-CTF-Platform\src\HackEdCTF.Web\HackEdCTF.Web\HackEdCTF.Web\obj 
+	~\HackED-CTF-Platform\src\HackEdCTF.Web\HackEdCTF.Web\HackEdCTF.Web\bin
+
+Next open the .sln file ~\HackED-CTF-Platform\src\HackEdCTF.Web\HackEdCTF.Web\HackEdCTF.Web.sln
+and then rebuild the solution and then launch.
+
+
 ## Optional Database Repair Scripts
 
 If the website opens but challenge tables or sample challenges are missing, run these scripts against `HackEdDB.mdf`:
