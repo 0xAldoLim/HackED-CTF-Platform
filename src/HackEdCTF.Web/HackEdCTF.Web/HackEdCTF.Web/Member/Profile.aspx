@@ -53,6 +53,7 @@
 <body>
     <form id="form1" runat="server">
 
+        <%-- ===== NAVBAR ===== --%>
         <nav class="navbar">
             <a href="../Default.aspx" runat="server" class="navbar-brand">
                 <img src="../white.png" alt="HackEd" class="navbar-logo" />
@@ -72,12 +73,14 @@
             </div>
         </nav>
 
+        <%-- ===== MAIN ===== --%>
         <main class="container section">
 
             <div class="page-header">
                 <h1 class="page-title">User Profile / Account Page</h1>
             </div>
 
+            <%-- Alert panels --%>
             <asp:Panel ID="pnlSuccess" runat="server" Visible="false" CssClass="alert alert-success" style="margin-bottom:1.5rem;">
                 <asp:Label ID="lblSuccess" runat="server"></asp:Label>
             </asp:Panel>
@@ -87,9 +90,10 @@
 
             <div class="two-column-layout">
 
+                <%-- ===== LEFT CARD ===== --%>
                 <div class="card">
 
-                    <%--VIEW mode--%>
+                    <%-- VIEW mode --%>
                     <asp:Panel ID="pnlView" runat="server">
                         <h2 class="card-title" style="margin-bottom:var(--space-5);">Account information</h2>
 
@@ -109,7 +113,7 @@
                         </div>
                     </asp:Panel>
 
-                    <%--EDIT mode--%>
+                    <%-- EDIT mode --%>
                     <asp:Panel ID="pnlEdit" runat="server" Visible="false">
                         <h2 class="card-title" style="margin-bottom:var(--space-5);">Edit Profile</h2>
 
@@ -169,6 +173,7 @@
 
                 </div>
 
+                <%-- Recent activity --%>
                 <div class="card">
                     <h2 class="card-title" style="margin-bottom:var(--space-4);">Recent activity</h2>
                     <div class="table-wrapper" style="border:none; background:transparent; box-shadow:none;">
@@ -198,6 +203,7 @@
             </div>
         </main>
 
+        <%-- ===== FOOTER ===== --%>
         <footer class="footer">
             <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:1rem;">
                 <div>

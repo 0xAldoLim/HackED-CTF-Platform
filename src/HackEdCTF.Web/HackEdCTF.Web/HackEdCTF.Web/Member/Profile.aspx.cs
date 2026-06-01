@@ -42,6 +42,9 @@ public partial class Member_Profile : Page
         Response.Redirect("~/Login.aspx");
     }
 
+    // -------------------------------------------------------
+    // Show edit panel, pre-populate fields
+    // -------------------------------------------------------
     protected void btnShowEdit_Click(object sender, EventArgs e)
     {
         int userID = int.Parse(Session["UserID"].ToString());
@@ -67,6 +70,9 @@ public partial class Member_Profile : Page
         pnlError.Visible = false;
     }
 
+    // -------------------------------------------------------
+    // Cancel — go back to view mode
+    // -------------------------------------------------------
     protected void btnCancel_Click(object sender, EventArgs e)
     {
         pnlEdit.Visible = false;
@@ -75,6 +81,9 @@ public partial class Member_Profile : Page
         pnlError.Visible = false;
     }
 
+    // -------------------------------------------------------
+    // Save changes
+    // -------------------------------------------------------
     protected void btnSave_Click(object sender, EventArgs e)
     {
         if (!Page.IsValid) return;
@@ -90,7 +99,7 @@ public partial class Member_Profile : Page
         {
             conn.Open();
 
-            //Check username
+            // --- Check username not taken by someone else ---
             SqlCommand cmdCheckUser = new SqlCommand(
                 "SELECT COUNT(*) FROM [Users] WHERE [Username] = @Name AND [UserID] <> @UID", conn);
             cmdCheckUser.Parameters.AddWithValue("@Name", newUsername);
@@ -101,7 +110,7 @@ public partial class Member_Profile : Page
                 return;
             }
 
-            //Check email
+            // --- Check email not taken by someone else ---
             SqlCommand cmdCheckEmail = new SqlCommand(
                 "SELECT COUNT(*) FROM [Users] WHERE [Email] = @Email AND [UserID] <> @UID", conn);
             cmdCheckEmail.Parameters.AddWithValue("@Email", newEmail);
@@ -112,7 +121,7 @@ public partial class Member_Profile : Page
                 return;
             }
 
-            //password change
+            // --- Handle optional password change ---
             bool changingPassword = !string.IsNullOrEmpty(newPwd) || !string.IsNullOrEmpty(currentPwd);
 
             if (changingPassword)
@@ -133,7 +142,7 @@ public partial class Member_Profile : Page
                     return;
                 }
 
-                // Verify current password
+                // Verify current password against stored SHA-256 hash
                 SqlCommand cmdGetHash = new SqlCommand(
                     "SELECT [PasswordHash] FROM [Users] WHERE [UserID] = @UID", conn);
                 cmdGetHash.Parameters.AddWithValue("@UID", userID);
@@ -181,6 +190,9 @@ public partial class Member_Profile : Page
         ShowSuccess("Profile updated successfully!");
     }
 
+    // -------------------------------------------------------
+    // Load display labels
+    // -------------------------------------------------------
     private void LoadProfile()
     {
         int userID = int.Parse(Session["UserID"].ToString());
@@ -255,6 +267,7 @@ public partial class Member_Profile : Page
     {
         lblError.Text = msg;
         pnlError.Visible = true;
+        // Stay in edit mode
         pnlEdit.Visible = true;
         pnlView.Visible = false;
     }

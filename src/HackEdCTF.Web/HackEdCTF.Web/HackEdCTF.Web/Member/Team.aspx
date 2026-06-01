@@ -85,7 +85,7 @@
                 <asp:Label ID="lblAlert" runat="server"></asp:Label>
             </asp:Panel>
 
-            <%--Create/Join--%>
+            <%-- NO TEAM: Create / Join --%>
             <asp:Panel ID="pnlNoTeam" runat="server">
                 <div class="page-header">
                     <h1 class="page-title">My Team</h1>
@@ -122,7 +122,7 @@
                     </div>
                 </div>
 
-                <%--EXISTING TEAMS LIST--%>
+                <%-- EXISTING TEAMS LIST --%>
                 <div style="margin-top:var(--space-10);">
                     <h2 class="page-title" style="font-size:1.5rem; margin-bottom:var(--space-2);">Existing Teams</h2>
                     <p class="page-subtitle" style="margin-bottom:var(--space-6);">Browse all active teams and view their profiles.</p>
@@ -153,7 +153,7 @@
                 </div>
             </asp:Panel>
 
-            <%--Team Profile--%>
+            <%-- HAS TEAM: Team Profile --%>
             <asp:Panel ID="pnlHasTeam" runat="server" Visible="false">
 
                 <asp:Panel ID="pnlBackToTeams" runat="server" Visible="false" style="margin-bottom:var(--space-6);">

@@ -14,6 +14,7 @@
 <body>
     <form id="form1" runat="server">
 
+        <%-- ===== NAVBAR ===== --%>
         <nav class="navbar">
             <a href="Default.aspx" class="navbar-brand">
                 <img src="white.png" alt="HackEd" class="navbar-logo" />
@@ -32,6 +33,7 @@
             </div>
         </nav>
 
+        <%-- ===== LOGIN CARD ===== --%>
         <div class="centered-panel">
             <div class="auth-card">
 
@@ -39,17 +41,17 @@
 
                 <h1 class="auth-title">Welcome back</h1>
 
-                <%--Success banner--%>
+                <%-- Success banner after registration --%>
                 <asp:Panel ID="pnlSuccess" runat="server" Visible="false" CssClass="alert alert-success" style="margin-bottom:1.25rem;">
                     Account created! You can now log in.
                 </asp:Panel>
 
-                <%--Error banner--%>
+                <%-- Error banner --%>
                 <asp:Panel ID="pnlError" runat="server" Visible="false" CssClass="alert alert-danger" style="margin-bottom:1.25rem;">
                     <asp:Label ID="lblError" runat="server"></asp:Label>
                 </asp:Panel>
 
-                <%--Email or username--%>
+                <%-- Email or username --%>
                 <div class="form-group">
                     <label class="form-label" for="<%= txtLogin.ClientID %>">Email or username</label>
                     <asp:TextBox ID="txtLogin" runat="server" CssClass="form-control" placeholder="aldo@example.com" MaxLength="100"></asp:TextBox>
@@ -57,7 +59,7 @@
                         ErrorMessage="Email or username is required." CssClass="validation-message" Display="Dynamic" />
                 </div>
 
-                <%--Password--%>
+                <%-- Password --%>
                 <div class="form-group">
                     <label class="form-label" for="<%= txtPassword.ClientID %>">Password</label>
                     <asp:TextBox ID="txtPassword" runat="server" TextMode="Password" CssClass="form-control" placeholder="••••••••" MaxLength="100"></asp:TextBox>
@@ -65,7 +67,7 @@
                         ErrorMessage="Password is required." CssClass="validation-message" Display="Dynamic" />
                 </div>
 
-                <%--Remember me--%>
+                <%-- Remember me --%>
                 <div class="form-group">
                     <label class="form-check">
                         <asp:CheckBox ID="chkRemember" runat="server" />
@@ -73,7 +75,7 @@
                     </label>
                 </div>
 
-                <%--Submit--%>
+                <%-- Submit --%>
                 <asp:Button ID="btnLogin" runat="server" Text="Login" CssClass="btn btn-primary btn-block"
                     OnClick="btnLogin_Click" />
 
@@ -84,6 +86,7 @@
             </div>
         </div>
 
+        <%-- ===== FOOTER ===== --%>
         <footer class="footer">
             <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:1rem;">
                 <div>

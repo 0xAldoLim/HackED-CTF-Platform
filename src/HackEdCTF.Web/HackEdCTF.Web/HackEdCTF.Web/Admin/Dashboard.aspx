@@ -14,6 +14,7 @@
 <body>
     <form id="form1" runat="server">
 
+        <%-- ===== NAVBAR (Admin) ===== --%>
         <nav class="navbar">
             <a href="../Default.aspx" runat="server" class="navbar-brand">
                 <img src="../white.png" alt="HackEd" class="navbar-logo" />
@@ -32,6 +33,7 @@
             </div>
         </nav>
 
+        <%-- ===== MAIN CONTENT ===== --%>
         <main class="container section">
 
             <div class="page-header">
@@ -61,6 +63,7 @@
                 </div>
             </div>
 
+            <%-- ===== MANAGE CARDS ===== --%>
             <div class="dashboard-grid" style="margin-bottom:var(--space-8);">
                     <a href="~/Admin/TrainingEditCreate.aspx" runat="server" class="feature-card" style="text-decoration:none; display:block;">
                         <h2 class="card-title">Manage Training Content</h2>
@@ -84,8 +87,36 @@
                     </a>
             </div>
 
+            <%-- ===== TABLE PREVIEW ===== --%>
+            <h2 style="margin-bottom:var(--space-5);">Simple table previews</h2>
+            <div class="table-wrapper">
+                <table class="crud-table">
+                    <thead>
+                        <tr>
+                            <th>Area</th>
+                            <th>Recent item</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <asp:Repeater ID="rptPreview" runat="server">
+                            <ItemTemplate>
+                                <tr>
+                                    <td><%# Eval("Area") %></td>
+                                    <td><%# Eval("RecentItem") %></td>
+                                    <td><%# Eval("Status") %></td>
+                                    <td><%# Eval("Action") %></td>
+                                </tr>
+                            </ItemTemplate>
+                        </asp:Repeater>
+                    </tbody>
+                </table>
+            </div>
+
         </main>
 
+        <%-- ===== FOOTER ===== --%>
         <footer class="footer">
             <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:1rem;">
                 <div>
